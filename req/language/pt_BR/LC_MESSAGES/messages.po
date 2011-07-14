@@ -1,0 +1,300 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-06-13 04:42-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=en\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: accountDetails.php:45
+msgid ""
+"The bitcoin address you supplied was invalid and therefore not updated into "
+"the system"
+msgstr ""
+
+#: accountDetails.php:50
+msgid "Information was successfully updated!"
+msgstr ""
+
+#: accountDetails.php:52
+msgid "Database Error | Contact the admin"
+msgstr ""
+
+#: accountDetails.php:74
+msgid "Successfully sent the amount of "
+msgstr ""
+
+#: accountDetails.php:74
+msgid " minus the 0.01 transaction fee to the bitcoin address of "
+msgstr ""
+
+#: accountDetails.php:76
+msgid "Bitcoind Query Error | Contact admin!"
+msgstr ""
+
+#: accountDetails.php:81
+msgid "The operator thinks it is best to have atleaset <b>"
+msgstr ""
+
+#: accountDetails.php:85
+msgid "Authorisation Pin number you entered didn't match our records"
+msgstr ""
+
+#: adminPanel.php:49
+msgid "Auth pin was not valid!"
+msgstr ""
+
+#: adminPanel.php:70 adminPanel.php:75
+msgid "Set userId "
+msgstr ""
+
+#: adminPanel.php:70
+msgid " to Disabled"
+msgstr ""
+
+#: adminPanel.php:75
+msgid " to Enable"
+msgstr ""
+
+#: adminPanel.php:87
+msgid "Admin Dashboard"
+msgstr ""
+
+#: adminPanel.php:143
+msgid "Website Settings"
+msgstr ""
+
+#: adminPanel.php:146
+msgid "Browser Title"
+msgstr ""
+
+#: adminPanel.php:147
+msgid "Header"
+msgstr ""
+
+#: adminPanel.php:148
+msgid "Solgan"
+msgstr ""
+
+#: adminPanel.php:149
+msgid "Cashout Minimum"
+msgstr ""
+
+#: adminPanel.php:150
+msgid "Confirm Email"
+msgstr ""
+
+#: adminPanel.php:152
+msgid "Auth Pin"
+msgstr ""
+
+#: adminPanel.php:153
+msgid "Update Website Settings"
+msgstr ""
+
+#: index.php:23
+msgid "Main Page"
+msgstr ""
+
+#: index.php:82
+msgid "Type in a new Blog entry"
+msgstr ""
+
+#: index.php:83
+msgid "Blog Title"
+msgstr ""
+
+#: index.php:84
+msgid "Blog content here"
+msgstr ""
+
+#: index.php:85
+msgid "Add Blog Entry"
+msgstr ""
+
+#: login.php:29
+msgid "Welcome back!, <br/>"
+msgstr ""
+
+#: login.php:33
+msgid "LOGIN FAILED | WHAT DID YOU DO!?"
+msgstr ""
+
+#: login.php:37
+msgid "Login failed - You haven't authorised your email account yet"
+msgstr ""
+
+#: login.php:41
+msgid "Login failed | You forgot your user name or password"
+msgstr ""
+
+#: logout.php:38
+msgid "Redirecting you to your regularly scheduled program"
+msgstr ""
+
+#: register.php:111
+msgid "Registration was a success! | Login to your email, "
+msgstr ""
+
+#: register.php:111
+msgid " and click on link to activate your account!"
+msgstr ""
+
+#: register.php:118
+msgid ""
+"Database error | User was not added to database, Please contact the admin."
+msgstr ""
+
+#: register.php:121
+msgid "That username is already registered with us"
+msgstr ""
+
+#: register.php:124
+msgid ""
+"Please check that you passwords match as well as your email; Auth Pin must "
+"be numbers only and 4 digits long no more, no less."
+msgstr ""
+
+#: register.php:127
+msgid "You are already have an account with us."
+msgstr ""
+
+#: register.php:133
+msgid "Sign up"
+msgstr ""
+
+#: register.php:170
+msgid "We just need a few details"
+msgstr ""
+
+#: register.php:206
+msgid "Username"
+msgstr ""
+
+#: register.php:207
+msgid "Password"
+msgstr ""
+
+#: register.php:208
+msgid "Retype Password"
+msgstr ""
+
+#: register.php:210
+msgid "Real Email"
+msgstr ""
+
+#: register.php:211
+msgid "Retype Email"
+msgstr ""
+
+#: register.php:213
+msgid "Authorization Pin"
+msgstr ""
+
+#: register.php:213
+msgid "(Memorize this 4 digit pin #)"
+msgstr ""
+
+#: register.php:214
+msgid "Sign Me Up!"
+msgstr ""
+
+#: workers.php:36
+msgid "You already have a worker named that"
+msgstr ""
+
+#: workers.php:105
+msgid "Not connected"
+msgstr ""
+
+#: workers.php:110
+msgid "Update"
+msgstr ""
+
+#: workers.php:110
+msgid "Delete"
+msgstr ""
+
+#: footer.php:4
+msgid "Wallpaper By"
+msgstr ""
+
+#: footer.php:5
+msgid "Donations"
+msgstr ""
+
+#: loginAndStats.php:8
+msgid "Check account status"
+msgstr ""
+
+#: loginAndStats.php:11
+msgid "Check Account"
+msgstr ""
+
+#: loginAndStats.php:14
+msgid "Lost Password"
+msgstr ""
+
+#: loginAndStats.php:17
+msgid "Register"
+msgstr ""
+
+#: loginAndStats.php:28
+msgid "Welcome Back"
+msgstr ""
+
+#: loginAndStats.php:28
+msgid "Logout"
+msgstr ""
+
+#: loginAndStats.php:29
+msgid "Valid"
+msgstr ""
+
+#: loginAndStats.php:29 loginAndStats.php:30
+msgid "shares"
+msgstr ""
+
+#: loginAndStats.php:30
+msgid "Total Pool"
+msgstr ""
+
+#: loginAndStats.php:31
+msgid "Est. Earnings"
+msgstr ""
+
+#: loginAndStats.php:31 loginAndStats.php:36
+msgid "BTC"
+msgstr ""
+
+#: loginAndStats.php:36
+msgid "Balance"
+msgstr ""
+
+#: menu.php:3
+msgid "Statistics"
+msgstr ""
+
+#: menu.php:11
+msgid "Account Details"
+msgstr ""
+
+#: menu.php:20
+msgid "Admin Panel"
+msgstr ""
+
+#: menu.php:23
+msgid "Edit Users"
+msgstr ""
+
