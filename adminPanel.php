@@ -48,9 +48,7 @@
 					}
 					
 					mysql_query("UPDATE `websiteSettings` 
-							SET `header` = '".$postHeader."',
-								`noreplyEmail` = '".$postEmail."',
-								`slogan` = '".$postSlogan."',
+							SET 	`noreplyEmail` = '".$postEmail."',
 								`browserTitle` = '".$postBrowserTitle."',
 								`cashoutMinimum` = '".$postCashOut."',
 								`serverFeePercentage` = '".$postFee."',
