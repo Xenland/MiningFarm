@@ -23,6 +23,8 @@ $returnError = "";
 	$loginValid		= $getCredientials->checkLogin($rawCookie);
 
 if($loginValid){
+	$getCredientials->getStats();
+	
 	//Check which action this user is trying to commence
 		if(!empty($_POST["act"])){
 			$act = $_POST["act"];
@@ -40,8 +42,8 @@ if($loginValid){
 				if($hashedDbPin == $hashedInputPin){
 					if($act == "editIdentity"){
 						//Update identity information
-							$payoutAddress = mysql_real_escape_string($_POST["payoutAddress"]);
-							$threshHold = mysql_real_escape_string($_POST["payoutThreashHold"]);
+							$payoutAddress	= mysql_real_escape_string($_POST["payoutAddress"]);
+							$threshHold	= mysql_real_escape_string($_POST["payoutThreashHold"]);
 								
 								$updateSuccess = mysql_query("UPDATE `accountBalance` SET `payoutAddress` = '".$payoutAddress."', `threshhold` = '".$threshHold."' WHERE `userId` = '".$getCredientials->userId."'")or die(mysql_error());
 								
@@ -60,45 +62,48 @@ if($loginValid){
 								$cashOutAddress = $getCredientials->sendAddress;
 								$userId		= $getCredientials->userId;
 								$cashOutMin	= getCashoutMin();
+								
 								if($accountBalance >= $cashOutMin){
 									//Subtract $accountBalance by 0.01 for the hardwired transaction fee
 										$accountBalance -= 0.01;
 
 
 									//Check if there was a donation address to send to
-											if(!empty($_POST["donate1"]){
-												//Subtract another .01
-													$accountBalance -= 0.01;
-													
-												//MySql injection protection
-													$donationAmount = mysql_real_escape_string($_POST["donate1"]);
-													$donationId	= mysql_real_escape_string($_POST["donation1"]);
+										if(!empty($_POST["donate1"])){
+											//Subtract another .01
+												$accountBalance -= 0.01;
 												
-												//Get donation address
-													$donationAddress = mysql_query("SELECT `bitcoinAddress` FROM `donationList` WHERE `id` = '".$donationId."' LIMIT 0,1")or die(mysql_error());
-													$donationAddress = mysql_fetch_object($donationAddress);
-													$doantionAddress = $donationAddress->bitcoinAddress;
-												
-												//Send donation
-													$sendDonate = $bitcoinController->sendtoaddress($doantionAddress, $donationAmount);
-													
-												//Subtract amount
-													$accountBalance -= $donationAmount;
-											}
+											//MySql injection protection
+												$donationAmount = mysql_real_escape_string($_POST["donate1"]);
+												$donationId	= mysql_real_escape_string($_POST["donation1"]);
 											
-											//Send payment
-											try{
-												$successSend = $bitcoinController->sendtoaddress($cashOutAddress, $accountBalance);
-											}catch(Exception $e){
-												$returnError = gettext("No bitcoins were sent | Contact Pool operator";
+											//Get donation address
+												$donationAddressQ = mysql_query("SELECT `bitcoinAddress` FROM `donationList` WHERE `id` = '".$donationId."' LIMIT 0,1")or die(mysql_error());
+												$donationAddressObj = mysql_fetch_object($donationAddressQ);
+												$doantionAddress = $donationAddressObj->bitcoinAddress;
+												
+											//Send donation
+												$sendDonate = $bitcoinController->sendtoaddress($donationAddress, $donationAmount);
+												
+											//Subtract amount
+												$accountBalance -= $donationAmount;
+										}
+										
+										//Send payment
+										try{
+											$successSend = $bitcoinController->sendtoaddress($cashOutAddress, $accountBalance);
+											if($successSend){
+												mysql_query("UPDATE `accountBalance` SET `balance` = '0' WHERE `userId` = '".$userId."'");
 											}
+										}catch(Exception $e){
+											$returnError = gettext("No bitcoins were sent | Contact Pool operator");
+										}
 
 								
 
 									//Reset account balance to zero
 										if($successSend){
-											mysql_query("UPDATE `accountBalance` SET `balance` = '0' WHERE `userId` = '".$userId."'");
-											$goodMessage = gettext("Successfully sent the amount of ").$accountBalance.gettext(" minus the 0.01 transaction fee to the bitcoin address of ").$cashOutAddress;
+											$goodMessage = gettext("Successfully sent the amount of ").$accountBalance.gettext(" including the 0.01 transaction fee to the bitcoin address of ").$cashOutAddress;
 										}else{
 											$returnError = gettext("Bitcoind Query Error | Contact admin!");
 										}
@@ -213,7 +218,7 @@ include($header);
 																								$donationList = mysql_query("SELECT `display`, `id` FROM `donationList`");
 																						?>
 																						<b>I would also like to..</b><br/>
-																						Donate:<input type="text" name="donate1" size="4" value="0"/>BTC to <select name="donation1">
+																						Donate:<input type="text" name="donate1" size="4" value="0" disabled="disabled"/>BTC to <select name="donation1">
 																														<option>None</option>
 																														<?php
 																															//Output donation options

@@ -294,7 +294,7 @@ class getCredientials{
 			$this->totalPoolShares	= $totalPoolShares;
 			$this->estimatedReward	= $estReward;
 			$this->pendingBalance	= $unconfirmedBalance;
-			$this->accountBalance 	= round($balance, 0);
+			$this->accountBalance 	= round($balance, 8);
 			$this->email		= $email;
 			$this->sendAddress	= $sendAddress;
 
