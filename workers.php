@@ -134,93 +134,137 @@ include($header);
 															<span class="returnError"><?php echo $returnError;?></span>
 															<span class="goodMessage"><?php echo $goodMessage;?></span>
 														</h3>
-														<table align="center" cellpadding="0" cellspacing="0" class="bigContent">
-															<tbody>
-																<tr>
-																	<td class="contTC">
-																		<?php echo gettext("Add a worker");?>
-																	</td>
-																</tr>
-																<tr>
-																	<td colspan="3" class="contContent">
-																		<span class="workersMessages"><?php echo $returnError;?></span>
-																		<form action="workers.php" method="post">
+														<div class="blogContainer">
+															<div class="blogHeader">
+																<h1 class="blogHeader">
+																	<?php echo gettext("Add a worker"); ?>
+																</h1>	
+															</div>
+															<div class="blogContent">
+																<span class="blogTimeReported">
+																	<form action="workers.php" method="post">
 																		<input type="text" name="username" value="username"> &middot; <input type="text" name="password" value="password"><input type="submit" name="act" value="Add Worker"><br/>
-																		</form><br/>
-																	</td>
-																</td>
-															</tbody>
-														</table><br/><br/>
-														<table align="center" cellpadding="0" cellspacing="0" class="bigContent">
-															<tbody>
-																<tr>
-																	<td class="contTC">
+																	</form><br/>
+<!-- 																			 -->
+																</span><br/>
+															</div>
+																
+														</div>
+														<div class="blogContainer">
+															<div class="blogHeader">
+																<h1 class="blogHeader">
 																		<?php echo gettext("Manage Workers");?>
-																	</td>
-																</tr>
-																<tr>
-																	<td class="contContent">
-																		<p>You can <i>create</i>, <i>delete</i>, and <i>update</i> each worker that you have specified below, In order to connect to our server with your Mining Application such as GUI Miner, or Phoniex Miner, you can point it towards your log in name(<?php echo $getCredientials->username;?>) then putting a peroid(.) and then the worker name you specified below along with the password. For instance if you wanted to connect to your worker named <b><i>username</i></b> with the password set to <i><b>password</b></i> you would connect with your miner with the following details:<br/>
-																			<b>Username: <?php echo $getCredientials->username;?>.username<br/>
-																				Password: password
-																			</b>
-																		</p>
-																		<hr size="1" width="100%"/>
-																		<?php
-																		//Get and show list of workers along with a <form> to add more workers
-																			//Get time 5 minutes ago
-																				$timeFiveMinutesAgo = time();
-																				$timeFiveMinutesAgo -= 60*5;
-																				
-																			$listWorkersQ = mysql_query("SELECT `id`, `username`, `password` FROM `pool_worker` WHERE `associatedUserId` = '".$getCredientials->userId."' ORDER BY `id` DESC")or die(mysql_error());
-																			while($worker = mysql_fetch_array($listWorkersQ)){
-																				//Get this workers recent average Mhashes (If any recently)
-																					$getMhashes = mysql_query("SELECT `mhashes` FROM `stats_userMHashHistory` WHERE `username` = '".$worker["username"]."' AND `timestamp` >= '$timeFiveMinutesAgo' ORDER BY `timestamp` DESC");
-																					$numHashes = mysql_num_rows($getMhashes);
-																					$totalMhashes = 0;
-																					while($mhashes = mysql_fetch_array($getMhashes)){
-																						$totalMhashes += $mhashes["mhashes"];
-																					}
-																					
-																					//Prevent division by zero
-																						if($totalMhashes > 0 && $totalMhashes > 0){
-																							$averageHashes = $totalMhashes/$numHashes;
-																						}else if($totalMhashes == 0 || $totalMhashes == 0){
-																							$averageHashes = "<span class=\"notConnected\">".gettext("Not connected")."</span>";
-																						}
-																						
-																						$averageHashes = round($averageHashes, 2);
-																				
-																					//Get this workers efficency (if working)
-																						$eff = "N/A"; 
-																						if($averageHashes > 0){
-																							$totalShares = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."'");
-																							$totalShares = mysql_num_rows($totalShares);
-																							
-																							$totalValidShares = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `our_result` = 'Y'");
-																							$totalValidShares = mysql_num_rows($totalValidShares);
-																							$eff = 100;
-																							if($totalShares > 0 && $totalValidShares > 0){
-																								$eff = round(($totalValidShares/$totalShares)*100, 2);
-																							}
-																						}
-																				//Split username for user input
-																					$splitUser = explode(".", $worker["username"]);
-																			?>
-																			<form action="workers.php" method="post">
-																				<input type="hidden" name="workerId" value="<?=$worker["id"]?>">
-																				<span class="workerName"><?php echo $splitUser[0]; ?></span>.<input type="text" name="username" value="<?php echo $splitUser[1]; ?>" size="10"> <input type="text" name="password" value="<?php echo $worker["password"];?>" size="10"><input type="submit" name="act" value="<?php echo gettext("Update");?>"><input type="submit" name="act" value="<?php echo gettext("Delete");?>"/><br/>
-																				<span class="workerMhash"><?php echo $averageHashes; ?> MHash/s</span> &middot; <span class="efficiency"><?php echo $eff;?>% efficient</span>
-																				</form><br/><Br/>
-																			<hr size="1" width="100%"/>
-																			<?php
+																</h1>	
+															</div>
+															<div class="blogContent">
+																<style type="text/css">
+																	.guiMiner{
+																		width:27.65em;
+																		height:17.8em;
+																		background-image:url('/images/workersHelp/guiminer.png');
+																	}
+																	.guiMinerForm{
+																		position:relative;
+																		top:7.3em;
+																		left:4.85em;
+																		
+																	}
+																	.guiMinerPass{
+																		position:relative;
+																		left:4.6em;
+																	}
+																	.guiMinerDisplay{
+																		position:relative;
+																		top:7em;
+																		left:14em;
+																	}
+																	.guiMinerEff{
+																		position:relative;
+																		top:1em;
+																	}
+																</style>
+																<p>
+																This is your worker managment area here you can Update, and Delete your miners.
+																Please select your mining application below and we'll generate what the login details should look like per application to help further assist you in mining.
+																</p>
+																Choose your Mining Application: <select id="minerApp">
+																	<option value="guiMiner">GUI Miner</option>
+																	<option value="Phoenix">Phoenix</option>
+																</select><br/><br/>
+																<hr size="1" width="100%"/>
+																<?php
+																//Get and show list of workers along with a <form> to add more workers
+																	//Get time 5 minutes ago
+																		$timeFiveMinutesAgo = time();
+																		$timeFiveMinutesAgo -= 60*5;
+																		
+																	$listWorkersQ = mysql_query("SELECT `id`, `username`, `password` FROM `pool_worker` WHERE `associatedUserId` = '".$getCredientials->userId."' ORDER BY `id` DESC")or die(mysql_error());
+																	while($worker = mysql_fetch_array($listWorkersQ)){
+																		//Get this workers recent average Mhashes (If any recently)
+																			$getMhashes = mysql_query("SELECT `mhashes` FROM `stats_userMHashHistory` WHERE `username` = '".$worker["username"]."' AND `timestamp` >= '$timeFiveMinutesAgo' ORDER BY `timestamp` DESC");
+																			$numHashes = mysql_num_rows($getMhashes);
+																			$totalMhashes = 0;
+																			while($mhashes = mysql_fetch_array($getMhashes)){
+																				$totalMhashes += $mhashes["mhashes"];
 																			}
+																			
+																			//Prevent division by zero
+																				if($totalMhashes > 0 && $totalMhashes > 0){
+																					$averageHashes = $totalMhashes/$numHashes;
+																				}else if($totalMhashes == 0 || $totalMhashes == 0){
+																					$averageHashes = "<span class=\"notConnected\">".gettext("Not connected")."</span>";
+																				}
+																				
+																				$averageHashes = round($averageHashes, 2);
+																		
+																			//Get this workers efficency (if working)
+																				$eff = "N/A"; 
+																				if($averageHashes > 0){
+																					$totalShares = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."'");
+																					$totalShares = mysql_num_rows($totalShares);
+																					
+																					$totalValidShares = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `our_result` = 'Y'");
+																					$totalValidShares = mysql_num_rows($totalValidShares);
+																					$eff = 100;
+																					if($totalShares > 0 && $totalValidShares > 0){
+																						$eff = round(($totalValidShares/$totalShares)*100, 2);
+																					}
+																				}
+																		//Split username for user input
+																			$splitUser = explode(".", $worker["username"]);
+																	?>
+																	<div class="guiMiner">
+																		<div class="guiMinerForm">
+																				<div class="serverTitle">
+																					
+																				</div>
+																				<form action="workers.php" method="post">
+																					<input type="hidden" name="workerId" value="<?=$worker["id"]?>">
+																					<input type="text" name="username" value="<?php echo $splitUser[0]; ?>.<?php echo $splitUser[1]; ?>" size="18"> <input type="text" name="password" size="11" class="guiMinerPass" value="<?php echo $worker["password"];?>" size="10">
+																					<br/>
+																					<div class="guiMinerDisplay">
+																							<span>
+																								<?php echo $averageHashes; ?> MHash/s
+																							</span> 
+																					</div>
+																					<div class="guiMinerEff">
+																							<span class="efficiency">
+																								<?php echo $eff;?>% efficient
+																							</span>
+																					</div>
+																				<!--	<input type="submit" name="act" value="<?php echo gettext("Update");?>"><input type="submit" name="act" value="<?php echo gettext("Delete");?>"/><br/>
+																					-->
+																				</form>
+																		</div>
+																	</div>
+																	<hr size="1" width="100%"/>
+																	<?php
+																	}
 
-																			?>
-																	</td>
-																</td>
-															</tbody>
-														</table><br/><br/>
+																	?>
+															</div>
+																
+														</div>
 													</div>
 													<div class="cleared"></div>
 												</div>
