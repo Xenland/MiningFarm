@@ -65,7 +65,7 @@ include($header);
 																		<?php echo $lastBlogPost->message; ?>
 																	</div>
 																		
-																</div>
+																</div><br/>
 																	
 															<?php
 																//Include graphs

@@ -37,7 +37,7 @@
 					$postSlogan		= mysql_real_escape_string($_POST["slogan"]);
 					$postBrowserTitle	= mysql_real_escape_string($_POST["browserTitle"]);
 					$postCashOut		= mysql_real_escape_string($_POST["cashoutMin"]);
-					$postFee		= mysql_real_escape_string($_POST["serverFee"]);
+					$postFee			= mysql_real_escape_string($_POST["serverFee"]);
 					$currencyData		= mysql_real_escape_string($_POST["currencyData"]);
 					$postEmailRequired	= mysql_real_escape_string($_POST["emailAuthRequired"]);
 					
@@ -59,9 +59,32 @@
 				//Add blog to database
 					//Mysql injection prevention
 						$blogTitle = mysql_real_escape_string($_POST["blogTitle"]);
-						$blogContent = mysql_real_escape_string($_POST["blogContentInput"]);
+						$blogContent = mysql_real_escape_string($_POST["blogContent"]);
 					mysql_query("INSERT INTO `blogPosts` (`timestamp`, `title`, `message`)
 									VALUES('".time()."', '".$blogTitle."', '".$blogContent."')");
+			}else if($act == "Update"){
+				//Update blog
+					//Mysql Injection prevention
+						$blogTitle = mysql_real_escape_string($_POST["blogTitle"]);
+						$blogContent = mysql_real_escape_string($_POST["blogContent"]);
+						$blogId = mysql_real_escape_string($_POST["blogId"]);
+					//Do query
+						mysql_query("UPDATE `blogPosts` SET `title` = '".$blogTitle."', `message` = '".$blogContent."' WHERE `id`= '".$blogId."'");
+			}else if($act == "Delete"){
+				echo "YES!";
+				//Delete blog
+					//MySql injection prevention
+						$blogId = mysql_real_escape_string($_POST["blogId"]);
+						
+					//Do query
+						$deleted = mysql_query("DELETE FROM `blogPosts` WHERE `id` = '".$blogId."'");
+						
+					//Return message
+						if($deleted != false){
+							$goodMessage = "Blog Deleted!";
+						}else{
+							$returnError = "Blog wasn't deleted, may be a database query problem";
+						}
 			}
 		}else if($act && $hashAuthInput != $getCredientials->hashedAuthPin){
 			$returnError = gettext("Auth pin was not valid!");
@@ -100,6 +123,13 @@
 				$searchUsername = $_GET["searchUsername"];
 		}
 		
+		//Decide $panelTitle
+			if($show == "editUsers"){
+				$panelTitle = "Edit Users";
+			}else if($show == "blogEditor"){
+				$panelTitle = "Add or Edit Blogs";
+			}
+		
 ?>
 				<?php
 				//Include the header & slogan
@@ -136,7 +166,13 @@
 																<div class="blogContainer">
 																	<div class="blogHeader">
 																		<h1 class="blogHeader">
-																			Administration Panel
+																			<?php
+																				if($panelTitle == ""){
+																					echo "Administration Panel";
+																				}else if($panelTitle != ""){
+																					echo $panelTitle;
+																				}
+																			?>
 																		</h1>	
 																	</div>
 																	<div class="blogContent">
@@ -145,7 +181,7 @@
 																				//Decide what we want to display based on what $act says
 																				////////////////////////////////////////////////////////
 																				$getCredientials->getAdminSettings();
-																				if($show == "" || $show == "editBlog"){
+																				if($show == ""){
 																					
 																			?>
 																			
@@ -217,6 +253,50 @@
 																				}
 																			?>
 																	</div>
+																	<?php
+																	if($show == "blogEditor"){
+																	?>
+																		<!--Add a blog entry-->
+																		<div class="blogContainer">
+																			<form action="/adminPanel.php?show=blogEditor" method="post">
+																				<input type="hidden" name="act" value="addBlog"/>
+																				<div class="blogHeader" style="height:16em;margin-bottom:5em;">
+																					<h1 class="blogHeader">
+																						<input type="text" name="blogTitle" value="Blog Header"/>
+																					</h1>
+																					<textarea cols="90" rows="10" name="blogContent">Type your blog entry here :)</textarea>
+																					Authorisation Pin:<input type="password" name="authPin" value="" size="4" maxlength="4"/><br/>
+																					<input type="submit" name="" value="Add Blog Entry"/>
+																					
+																					<br/><br/>
+																				</div>
+																			</form>
+																		</div>
+																	<?php
+																					//Get list of blogs
+																						$blogList = mysql_query("SELECT `id`,`timestamp`, `title`, `message` FROM `blogPosts` ORDER BY `timestamp` DESC");
+																						while($blog = mysql_fetch_array($blogList)){
+																	?>
+																				
+																		<div class="blogContainer">
+																			<form action="/adminPanel.php?show=blogEditor" method="post">
+																				<input type="hidden" name="blogId" value="<?php echo $blog["id"];?>"/>
+																			<div class="blogHeader" style="height:17em;">
+																				<h1 class="blogHeader">
+																					<input type="text" name="blogTitle" value="<?php echo $blog["title"]; ?>" />
+																				</h1>
+																				<textarea cols="90" rows="10" name="blogContent"><?php echo $blog["message"];?></textarea><br/>
+																				Authorization Pin:<input type="password" name="authPin" value="" size="4" maxlength="4"/><br/>
+																				<input type="submit" name="act" value="Update"/> &middot; <input type="submit" name="act" value="Delete"/>
+																				
+																				<br/><br/>
+																			</div>
+																			</form>
+																		</div>
+																	<?php
+																				}
+																		}
+																	?>
 																		
 																</div>
 													</div>

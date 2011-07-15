@@ -250,19 +250,34 @@ connectToDb();
 					<!-- End of Line for class="art-nav" or navigation to be precise -->
 					<div style="width:99%;overflow-x:hidden; margin:0 auto;text-align:center;padding:1em;">
 						<div style="">
-							<!-- Google Adsense | Don't Delete this with out the authors permission to do so -->
-							<script type="text/javascript"><!--
-							google_ad_client = "ca-pub-2226221363593609";
-							/* MiningFarm -Redistrubutable */
-							google_ad_slot = "8140870042";
-							google_ad_width = 728;
-							google_ad_height = 90;
-							//-->
+							<!-- Begin: adBrite, Generated: 2011-07-14 23:18:11  -->
+							<script type="text/javascript">
+							var AdBrite_Title_Color = '0000FF';
+							var AdBrite_Text_Color = '000000';
+							var AdBrite_Background_Color = 'FFFFFF';
+							var AdBrite_Border_Color = 'CCCCCC';
+							var AdBrite_URL_Color = '008000';
+							try{var AdBrite_Iframe=window.top!=window.self?2:1;var AdBrite_Referrer=document.referrer==''?document.location:document.referrer;AdBrite_Referrer=encodeURIComponent(AdBrite_Referrer);}catch(e){var AdBrite_Iframe='';var AdBrite_Referrer='';}
 							</script>
-							<script type="text/javascript"
-							src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-							</script>
+							<span style="white-space:nowrap;"><script type="text/javascript">document.write(String.fromCharCode(60,83,67,82,73,80,84));document.write(' src="http://ads.adbrite.com/mb/text_group.php?sid=1977178&zs=3732385f3930&ifr='+AdBrite_Iframe+'&ref='+AdBrite_Referrer+'" type="text/javascript">');document.write(String.fromCharCode(60,47,83,67,82,73,80,84,62));</script>
+							<a target="_top" href="http://www.adbrite.com/mb/commerce/purchase_form.php?opid=1977178&afsid=1"><img src="http://files.adbrite.com/mb/images/adbrite-your-ad-here-leaderboard.gif" style="background-color:#CCCCCC;border:none;padding:0;margin:0;" alt="Your Ad Here" width="14" height="90" border="0" /></a></span>
+							<!-- End: adBrite -->
 						</div>
+						
+						<!--Google Analytics-->
+						<script type="text/javascript">
+						var _gaq = _gaq || [];
+						_gaq.push(['_setAccount', 'UA-24560939-1']);
+						_gaq.push(['_trackPageview']);
+
+						(function() {
+						var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+						ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+						var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+						})();
+
+						</script>
+						<!-- ENd google analytics-->
 						<div style="display:none;">
 							<!--Set some tags so google can know WTF this site is about when first installed -->
 							<b>Bitcoin</b>,<b>Bitcoins</b><b>Mining</b>, <b>Farm</b>, <b>Mining Farm</b>, <b>Collect bitcoins</b>, <b>Freedom</b>, <b>small government</b>

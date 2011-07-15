@@ -1,7 +1,7 @@
 <?php
 //Comment the following line when debuging this page.
 //error_reporting(0);
-
+set_time_limit(120);
 // Load Linkage Variables //
 	$dir = dirname(__FILE__);
 	$dir		= str_replace("/req/cronjob", "", $dir);
@@ -102,6 +102,70 @@ if(!empty($tradeHillWorth)){
 			}
 }
 
+
+	/*
+//Retireve JSON data from trade hill update it to database for quick retireval
+try{
+	$file = fopen("https://mtgox.com/code/data/ticker.php", "r");
+	$tradedata = fread($file, filesize($file));
+	fclose($file);
+
+	//get trade hill json data
+		$jsonTradedata = json_decode($tradedata, true);
+		
+	//calculate average with the provided data (Buy, sell, last sale)
+		$tradeHillWorth = round((($jsonTradedata[ticker][last]+$jsonTradedata[ticker][sell]+$jsonTradedata[ticker][buy])/3), 2);
+	
+	mysql_query("UPDATE `websiteSettings` SET `tradeHillWorth` = '".$tradeHillWorth."'");
+}catch (Exception $e) {
+	echo "Failed to get TradeHill bitcoioin worth<br/>".$e;
+}
+*/
+
+
+
+              
+	$url = 'https://mtgox.com/code/data/ticker.php';
+
+        //open connection
+        $ch = curl_init();
+                        
+        //set the url
+        curl_setopt($ch, CURLOPT_URL, $url);
+        //curl_setopt($ch, CURLOPT_HEADER, TRUE);
+        
+        //add POST fields
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        
+        //MUST BE REMOVED BEFORE PRODUCTION (USE for SSL)
+        curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, 0); 
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Xenland');
+        //curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        
+        //execute CURL connection
+        $returnData = curl_exec($ch);
+                
+        //$code = $this->returnCode($returnData);        
+        
+        if( $returnData === false)
+        {
+            die('<br />Connection error:' . curl_error($ch));
+        }
+        else
+        {
+            //Log successful CURL connection
+        }
+        
+        //close CURL connection
+        curl_close($ch);
+        
+        echo '<pre>';
+        print_r(json_decode($returnData, true));
+        echo '</pre>';   
 
 
 ?>
