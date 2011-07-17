@@ -15,14 +15,14 @@ $startTime = time();
 
 //Load bitcoind function
 	include($bitcoind);
-
+echo "OH NOES!";
 //Connect to database
 	connectToDb();
 	
 
 //Only run script if the script is being ran from the same server or from an admin
 
-
+echo "0";
 //Set adminFee
 	$serverFee = getAdminFee();
 
@@ -31,7 +31,7 @@ $startTime = time();
 
 //Get some variables
 	$transactions = $bitcoinController->query("listtransactions");
-
+echo "1";
 //Go through all the transactions check if there is 50BTC inside
 	$numAccounts = count($transactions);
 	for($i = 0; $i < $numAccounts; $i++){
@@ -84,7 +84,7 @@ $startTime = time();
 		
 	}
 
-
+echo "2";
 
 //Go through all the transctions from bitcoind and update their confirms associated with their `networkBlock`
 	//Get server fee before continuing....
@@ -132,7 +132,7 @@ $startTime = time();
 							}
 				}
 		}
-
+echo "3";
 //Go through every user in `websiteUsers`, collect all their users and award them indiviually
 	$userList = mysql_query("SELECT `id`, `username` FROM `websiteUsers`")or die(mysql_error());
 	
@@ -154,7 +154,6 @@ $startTime = time();
 									
 									//Enough confirms?
 										if($enoughConfirms >= 120){
-											echo "enough Confiremds";
 											//Count all the shares this username has, reward them in there account balance, then mark all the shares as counted
 												$numTotalUsersSharesQ = mysql_query("UPDATE `shares_history` SET `shareCounted` = '1' WHERE `shareCounted` = '0' AND `blockNumber` = '".$block["blockNumber"]."' AND `username` LIKE '".$user["username"].".%' AND `our_result` = 'Y'")or die(mysql_error());
 												$numTotalUsersShares = mysql_affected_rows();
@@ -179,7 +178,7 @@ $startTime = time();
 													//total reward
 														$totalReward = $A;
 														
-												//update the owner of all the worker(S) that subbmited work to there balance 
+													//update the owner of all the worker(S) that subbmited work to there balance 
 														mysql_query("UPDATE `accountBalance` SET `balance` = `balance`+$totalReward WHERE `userId` = '".$user["id"]."'");
 										
 												}
@@ -188,7 +187,7 @@ $startTime = time();
 							}
 					}
 			}
-			
+	echo "4";		
 //Check all blocks that are orphans then update them in the stats that all shares in that round are considered counted
 	$getOrphandBlocks = mysql_query("SELECT `blockNumber` FROM `networkBlocks` WHERE `orphan` = 1");
 	while($orphanBlock = mysql_fetch_array($getOrphandBlocks)){
@@ -201,7 +200,7 @@ $startTime = time();
 	"No, it will save space thats about it, and this will provide a 'backup' sort of speak just in case something bad happens the pool operator can execute
 	a few commands to recalculate shares and rewards"
 */
-
+echo "5";
 //Get all counted shares
 	$countedShares = mysql_query("SELECT `id`, `time`, `rem_host`, `username`, `our_result`, `upstream_result`, `reason`, `solution` FROM `shares_history` WHERE `shareCounted` = '1'");
 	$numCountedShares = mysql_num_rows($countedShares);

@@ -5,86 +5,64 @@
 																$getCredientials->getAdminSettings();	
 																
 															//generate graph information
-																//Get this individuals mhash
+																//Get this pool/user mhash graph
 																	$fifteenMinutesAgo = time();
 																	$fifteenMinutesAgo -= 60*15;
-																	$userHashHistoryQ = mysql_query("SELECT DISTINCT `timestamp` FROM `stats_userMHashHistory` WHERE `username` LIKE '".$getCredientials->username.".%' AND `timestamp` >= '$fifteenMinutesAgo' AND `mhashes` > 0 ORDER BY `timestamp` ASC");
-																	$numRows = mysql_num_rows($userHashHistoryQ);
+																	$userHashHistoryQ = mysql_query("SELECT `id` FROM `stats_userMHashHistory` WHERE `username` LIKE '".$getCredientials->username.".%' AND `timestamp` >= '$fifteenMinutesAgo' AND `mhashes` > 0 LIMIT 1");
+																	$minersOnline = mysql_num_rows($userHashHistoryQ);
 																	
-																	//Go through every time stamp and average out all the workers per timestamp
-																		$userHashArray = "";
-																		$timeHashArray = "";
-																		$poolHashArray = "";
-																		$poolTotalHashArray = "";
+																//Predefine graphing arrays
+																	$poolArray		= '';
+																	$userTotalArray	= '';
+																	$timeHashArray = '';
 																	
-																	//Show this graph if logged in
-																	if($numRows > 0){
-																		$i=0;
-																		while($time = mysql_fetch_array($userHashHistoryQ)){
+																	$multiWorkerNameArray 		= '';
+																	$multiWorkerHashArray	= '';
+																	
+																//Generate pool array from last fifteen mintutes of data
+																	$i = 0;
+																	$poolTotalQuery = mysql_query('SELECT `totalMhash`, `timestamp` FROM `stats_poolMHashHistory` WHERE `timestamp` >= '.$fifteenMinutesAgo.' ORDER BY `timestamp` ASC');
+																	while($poolStat = mysql_fetch_array($poolTotalQuery)){
+											
+																		//add divider if neccesarry
+																			$i++;
+																			if($i > 1){
+																				$poolArray .= ',';
+																				$timeHashArray .= ',';
+																			}
 																			
-																			$tmpHashAverage = 0;
-																			$tmpTotalHash = 0;
-																			//Get all mhash results with this timestamp and average them up
-																				$getAllWorkerHash = mysql_query("SELECT `mhashes` FROM `stats_userMHashHistory` WHERE `username` LIKE '".$getCredientials->username.".%' AND `timestamp` = '".$time["timestamp"]."' AND `mhashes` > 0");
-																				$numWorkersThisTime = mysql_num_rows($getAllWorkerHash);
-																				while($workerHash = mysql_fetch_array($getAllWorkerHash)){
-																					$tmpHashAverage += $workerHash["mhashes"];
-																					$tmpTotalHash += $workerHash["mhashes"];
-																				}
-																				$tmpHashAverage = $tmpHashAverage/$numWorkersThisTime;
-																			//Get pool average results
-																				$getPoolAverageResult = mysql_query("SELECT `averageMhash`, `totalMhash` FROM `stats_poolMHashHistory` WHERE `timestamp` = '".$time["timestamp"]."' LIMIT 0,1");
-																		
-																					$poolAverageQ = mysql_fetch_object($getPoolAverageResult);
-																					$poolAverage = $poolAverageQ->averageMhash;
-																					$tmpTotalHash = $poolAverageQ->totalMhash;
-																					//Pool average comes up null sometimes this will prevent a break in the graph
-																						if(!isSet($poolAverage)){
-																							$poolAverage = 0;
-																						}
+																		//add data to graph
+																			$poolArray .= $poolStat["totalMhash"];
+																			
+																			$timeHashArray .= "'".date("g:s", $poolStat["timestamp"])."'";
+																	
+														
+																		//Generate user total mhash array for display(If they are logged in)
+																			if($loginValid == 1){
 																				
-																			//Add points to graph
-																				if($i > 0){
-																					$userHashArray .= ",";
-																					$timeHashArray .= ",";
-																					$poolHashArray .= ",";
-																					$poolTotalHashArray .= ",";
-																				}
-																				$i++;
-																				$timeHashArray .= "'".date("G:i", $time["timestamp"])."'";
-																				$userHashArray .= round($tmpHashAverage);
-																				$poolHashArray .= round($poolAverage);
-																				$poolTotalHashArray .= round($tmpTotalHash);
-																		}
-																		
-																	}else if($numRows == 0){
-																		//Show this graph when not logged in
-																		$i=0;
-																		//Go through the pool history and display that
-																		$poolHistory = mysql_query("SELECT `averageMhash`, `totalMhash`, `timestamp` FROM `stats_poolMHashHistory` WHERE `timestamp` >= '".$fifteenMinutesAgo."' ORDER BY `timestamp` ASC");
-																			while($poolHash = mysql_fetch_array($poolHistory)){
-																				if($i > 0){
-																					$poolHashArray .=",";
-																					$timeHashArray .=",";
-																					$poolTotalHashArray .=",";
-																				}
-																				$i++;
-																				$poolHashArray .= round($poolHash["averageMhash"]);
-																				$timeHashArray .= "'".date("g:i", $poolHash["timestamp"])."'";
-																				$poolTotalHashArray .= round($poolHash["totalMhash"]);
+																					//Is there any miners connected
+																						if($minersOnline > 0){
+																						
+																							//Generate output for total mhash display
+																								
+																								//Add divider(if neccessary)
+																									if($i > 1){
+																										$userTotalArray .= ',';
+																									}
+																							
+																								//Query total mining powa at this timestamp
+																									$miningPowa = mysql_query('SELECT sum(`mhashes`) AS `UserTotal` FROM `stats_userMHashHistory` WHERE `username` LIKE "'.$getCredientials->username.'.%" AND `timestamp` = "'.$poolStat["timestamp"].'" AND `mhashes` > 0');
+																									$miningPowaObj = mysql_fetch_object($miningPowa);
+																								
+																							//Add data to graph
+																								$userTotalArray .= $miningPowaObj->UserTotal;
+																						
+																						}
+																							
 																			}
 																	}
 																	
-																//If theres no data to be displayed even after the above display filler data
-																	if($poolHashArray == "" && $timeHashArray  == "" && $poolTotalHashArray  == ""){
-																		$timeHashArray = "'".date("G:i", time())."'";
-																		$poolHashArray = "0";
-																		$poolTotalHashArray = "0";
-																	}
-																
-																if($getCredientials->statsShowAllUsers == 1){
-																	//
-																}
+															
 														?>
 														<script type="text/javascript">
 															var chart1; // globally available
@@ -108,23 +86,15 @@
 																		}
 																	},
 																	series: [{
-																		name: 'Pool Average',
-																		data: [<?php echo $poolHashArray; ?>]
-																		},
-																		{
-																		name: 'Pool Total',
-																		data: [<?php echo $poolTotalHashArray;?>]
+																		name: 'Pool ',
+																		data: [<?php echo $poolArray; ?>]
 																		}
-																		<?php
-																			if($userHashArray != ""){
-																		?>, 
-																		{
-																		name: 'Your Average',
-																		data: [<?php echo $userHashArray?>]
+																		<?php if($userTotalArray != ''){?>
+																		,{
+																		name: 'Total User',
+																		data: [<?php echo $userTotalArray;?>]
 																		}
-																		<?php
-																			}
-																		?>]
+																		<?php } ?>]
 																});
 															});
 														</script>

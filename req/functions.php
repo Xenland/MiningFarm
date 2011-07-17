@@ -226,6 +226,7 @@ class getCredientials{
 			$threashhold = 0;
 			$sendAddress = "";
 			$totalShares = 0;
+			
 		//Connect to db
 			connectToDb();
 
@@ -328,6 +329,19 @@ function getCashoutMin(){
 		return (int)$cashOutMinObj->cashoutMinimum;
 }
 
+function getCoinType(){
+	//connnect to db
+		connectToDb();
+		
+	//get coin type
+		//1= bitcoin
+		//2= namecoin
+		$coinTypeQ = mysql_query("SELECT `coinType` FROM `websiteSettings`");
+		
+		$coinTypeObj = mysql_fetch_object($coinTypeQ);
+		
+		return $coinTypeObj->coinType;
+}
 
 
 function activateAccount($username, $authPin){

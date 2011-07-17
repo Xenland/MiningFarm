@@ -188,6 +188,10 @@
 																				<h2 style="text-decoration:underline;"><?php echo gettext("Website Settings");?></h2>
 																					<form action="?" method="post">
 																						<input type="hidden" name="act" value="websiteSettings">
+																						<?php echo gettext("Coin Type");?>:<select name="coinType">
+																															<option value="bitocin">Bitcoin</option>
+																															<option value="namecoin">Namecoin</option>
+																													</select><br/>
 																						<?php echo gettext("Browser Title");?>:<input type="text" id="browserTitleInput" name="browserTitle" value="<?php echo $getCredientials->adminBrowserTitle;?>" onKeyPress="updateBrowserTitle();" onKeyUp="updateBrowserTitle();" onKeyDown="updateBrowserTitle();"><br/>
 																						<?php echo gettext("Confirm Email");?>: <input type="text" name="confirmEmail" value="<?php echo $getCredientials->adminEmail;?>"><br/>
 																						<?php echo gettext("Email Authorisation Required for Signup:");?><input type="checkbox" name="emailAuthRequired"<?php if($getCredientials->emailAuthorisationRequired == "1"){ echo ' checked';}?>/><br/>
