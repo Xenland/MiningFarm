@@ -214,8 +214,13 @@ include($header);
 																						}?><br/><br/>
 																						
 																						<?php 
-																							//get donation list
-																								$donationList = mysql_query("SELECT `display`, `id` FROM `donationList`");
+																							//get donation list\
+																								//Get bitcoin type (bitcoin/namecoin)
+																									$coinType = getCoinType();
+																									$donationList = mysql_query("SELECT `display`, `id` FROM `donationList` WHERE `coinAddressType` = '".$coinType."'");
+																									$numDonationsAddresses = mysql_num_rows($donationList);
+																									
+																						if($numDonationsAddresses > 0){
 																						?>
 																						<b>I would also like to..</b><br/>
 																						Donate:<input type="text" name="donate1" size="4" value="0">BTC to <select name="donation1">
@@ -230,6 +235,9 @@ include($header);
 																																}
 																														?>
 																													</select></input>
+																						<?php
+																						}
+																						?>
 																						<br/><hr size="1" width="100%">
 																				<input type="submit" value="<?php echo gettext("Execute Payout");?>">
 																			</form>

@@ -15,14 +15,13 @@ $startTime = time();
 
 //Load bitcoind function
 	include($bitcoind);
-echo "OH NOES!";
+	
 //Connect to database
 	connectToDb();
 	
 
 //Only run script if the script is being ran from the same server or from an admin
 
-echo "0";
 //Set adminFee
 	$serverFee = getAdminFee();
 
@@ -103,7 +102,7 @@ echo "2";
 					//This is a winning account
 						$winningAccountObj	= mysql_fetch_object($winningAccountQ);
 						$winningId		= $winningAccountObj->id;
-						$confirms		= $transactions[$i]["confirmations"];
+						$confirms			= $transactions[$i]["confirmations"];
 						$orphan			= $transactions[$i]["category"];
 						
 						if($orphan == "orphan"){

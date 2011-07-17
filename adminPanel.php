@@ -40,6 +40,7 @@
 					$postFee			= mysql_real_escape_string($_POST["serverFee"]);
 					$currencyData		= mysql_real_escape_string($_POST["currencyData"]);
 					$postEmailRequired	= mysql_real_escape_string($_POST["emailAuthRequired"]);
+					$coinType			= mysql_real_escape_string($_POST["coinType"]);
 					
 					if($postEmailRequired == "on"){
 						$postEmailRequired = 1;
@@ -53,7 +54,8 @@
 								`cashoutMinimum` = '".$postCashOut."',
 								`serverFeePercentage` = '".$postFee."',
 								`currencyData` = '".$currencyData."',
-								`enableRequiredEmail` = '".$postEmailRequired."'")or die(mysql_error());
+								`enableRequiredEmail` = '".$postEmailRequired."',
+								`coinType` = '".$coinType."'")or die(mysql_error());
 			
 			}else if($act == "addBlog"){
 				//Add blog to database
@@ -182,6 +184,8 @@
 																				////////////////////////////////////////////////////////
 																				$getCredientials->getAdminSettings();
 																				if($show == ""){
+																					//Get coin type
+																						$dbCoinType = getCoinType();
 																					
 																			?>
 																			
@@ -189,8 +193,8 @@
 																					<form action="?" method="post">
 																						<input type="hidden" name="act" value="websiteSettings">
 																						<?php echo gettext("Coin Type");?>:<select name="coinType">
-																															<option value="bitocin">Bitcoin</option>
-																															<option value="namecoin">Namecoin</option>
+																															<option value="1" <?php if($dbCoinType == 1){ echo 'selected="selected"';}?>>Bitcoin</option>
+																															<option value="2" <?php if($dbCoinType == 2){ echo 'selected="selected"';}?>>Namecoin</option>
 																													</select><br/>
 																						<?php echo gettext("Browser Title");?>:<input type="text" id="browserTitleInput" name="browserTitle" value="<?php echo $getCredientials->adminBrowserTitle;?>" onKeyPress="updateBrowserTitle();" onKeyUp="updateBrowserTitle();" onKeyDown="updateBrowserTitle();"><br/>
 																						<?php echo gettext("Confirm Email");?>: <input type="text" name="confirmEmail" value="<?php echo $getCredientials->adminEmail;?>"><br/>
