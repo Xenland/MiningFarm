@@ -218,7 +218,7 @@ include($header);
 																								$donationList = mysql_query("SELECT `display`, `id` FROM `donationList`");
 																						?>
 																						<b>I would also like to..</b><br/>
-																						Donate:<input type="text" name="donate1" size="4" value="0" disabled="disabled"/>BTC to <select name="donation1">
+																						Donate:<input type="text" name="donate1" size="4" value="0">BTC to <select name="donation1">
 																														<option>None</option>
 																														<?php
 																															//Output donation options
@@ -229,7 +229,7 @@ include($header);
 																														<?php
 																																}
 																														?>
-																													</select>
+																													</select></input>
 																						<br/><hr size="1" width="100%">
 																				<input type="submit" value="<?php echo gettext("Execute Payout");?>">
 																			</form>

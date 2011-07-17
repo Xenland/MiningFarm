@@ -126,7 +126,7 @@ $startTime = time();
 											$totalFee = 50*($serverFee*.01);
 											
 										//Add fee to the admin account
-											mysql_query("UPDATE `websiteSettings` SET `serverFeeAccountBalance` += $totalFee")or die(mysql_error());
+											mysql_query("UPDATE `websiteSettings` SET `serverFeeAccountBalance` = `serverFeeAccountBalance`+$totalFee")or die(mysql_error());
 											
 									}
 							}
@@ -138,16 +138,15 @@ $startTime = time();
 	
 		//Looping through every user
 			while($user = mysql_fetch_array($userList)){
-			
 				//Find out if there is any uncounted shares this user has that needs to be counted
-					$uncountedShares = mysql_query("SELECT `id` FROM `shares_history` WHERE `shareCounted` = '0' LIMIT 1");
-					$uncountedShares = mysql_num_rows($uncountedShares);
+					$uncountedSharesQ = mysql_query("SELECT `id` FROM `shares_history` WHERE `shareCounted` = '0' AND `username` LIKE '".$user["username"].".%' LIMIT 1");
+					$uncountedShares = mysql_num_rows($uncountedSharesQ);
 					
 					if($uncountedShares >= 1){
 						//Get list of blocks that this user has shares in
 							$blocksQ = mysql_query("SELECT DISTINCT `blockNumber` FROM `shares_history` WHERE `shareCounted` = '0' AND `username` LIKE '".$user["username"].".%'");
 							while($block = mysql_fetch_array($blocksQ)){
-									
+							
 								//Check if the selected block has enough confirms//
 									$enoughConfirmsQ = mysql_query("SELECT `confirms` FROM `networkBlocks` WHERE `blockNumber` = '".$block["blockNumber"]."' AND `orphan` = '0'");
 									$enoughConfirmsObj = mysql_fetch_object($enoughConfirmsQ);
@@ -155,6 +154,7 @@ $startTime = time();
 									
 									//Enough confirms?
 										if($enoughConfirms >= 120){
+											echo "enough Confiremds";
 											//Count all the shares this username has, reward them in there account balance, then mark all the shares as counted
 												$numTotalUsersSharesQ = mysql_query("UPDATE `shares_history` SET `shareCounted` = '1' WHERE `shareCounted` = '0' AND `blockNumber` = '".$block["blockNumber"]."' AND `username` LIKE '".$user["username"].".%' AND `our_result` = 'Y'")or die(mysql_error());
 												$numTotalUsersShares = mysql_affected_rows();
