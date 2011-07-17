@@ -160,29 +160,58 @@ include($header);
 																<style type="text/css">
 																	.guiMiner{
 																		width:27.65em;
-																		height:17.8em;
+																		height:17.6em;
 																		background-image:url('/images/workersHelp/guiminer.png');
+																		background-repeat:no-repeat;
 																	}
 																	.guiMinerForm{
 																		position:relative;
-																		top:7.3em;
-																		left:4.85em;
-																		
+																		top:5.5em;
+																		left:1em;
+																	}
+																	.guiServerTitle{
+																		position:relative;
+																		top:0;
+																		left:4em;
+																	}
+																	.guiMinerUser{
+																		position:relative;
+																		top:.7em;
+																		left:4.4em;
 																	}
 																	.guiMinerPass{
 																		position:relative;
-																		left:4.6em;
+																		top:.7em;
+																		left:9.4em;
 																	}
-																	.guiMinerDisplay{
+																	.guiMinerHash{
 																		position:relative;
-																		top:7em;
-																		left:14em;
+																		top:6em;
+																		left:19em;
 																	}
 																	.guiMinerEff{
 																		position:relative;
-																		top:1em;
+																		top:.5em;
+																		left:1em;
+																	}
+																	.guiMinerShares{
+																		position:relative;
+																		top:3.7em;
+																	}
+																	.guiMinerUpdate{
+																		position:relative;
+																		top:6em;
+																		left:5em;
+																	}
+																	.guiMinerDelete{
+																		position:relative;
+																		top:6em;
+																		left:6.5em;
 																	}
 																</style>
+																<script type="text/javascript">
+																
+																</script>
 																<p>
 																This is your worker managment area here you can Update, and Delete your miners.
 																Please select your mining application below and we'll generate what the login details should look like per application to help further assist you in mining.
@@ -235,26 +264,31 @@ include($header);
 																	?>
 																	<div class="guiMiner">
 																		<div class="guiMinerForm">
-																				<div class="serverTitle">
-																					
+																				<div class="guiServerTitle">
+																					MiningFarm.com
 																				</div>
 																				<form action="workers.php" method="post">
 																					<input type="hidden" name="workerId" value="<?=$worker["id"]?>">
-																					<input type="text" name="username" value="<?php echo $splitUser[0]; ?>.<?php echo $splitUser[1]; ?>" size="18"> <input type="text" name="password" size="11" class="guiMinerPass" value="<?php echo $worker["password"];?>" size="10">
+																					<input type="text" name="username" value="<?php echo $splitUser[0]; ?>.<?php echo $splitUser[1]; ?>" size="18" class="guiMinerUser"> <input type="text" name="password" size="11" class="guiMinerPass" value="<?php echo $worker["password"];?>" size="10">
 																					<br/>
-																					<div class="guiMinerDisplay">
-																							<span>
-																								<?php echo $averageHashes; ?> MHash/s
-																							</span> 
-																					</div>
-																					<div class="guiMinerEff">
-																							<span class="efficiency">
-																								<?php echo $eff;?>% efficient
-																							</span>
-																					</div>
-																				<!--	<input type="submit" name="act" value="<?php echo gettext("Update");?>"><input type="submit" name="act" value="<?php echo gettext("Delete");?>"/><br/>
-																					-->
+																					<input type="submit" name="act" value="<?php echo gettext("Update");?>" class="guiMinerUpdate"/><input type="submit" name="act" value="<?php echo gettext("Delete");?>" class="guiMinerDelete"/><br/>
+																				
 																				</form>
+																				<div class="guiMinerHash">
+																						<span>
+																							<?php echo $averageHashes; ?> MHash/s
+																						</span> 
+																				</div>
+																				<div class="guiMinerEff">
+																						<span class="efficiency">
+																							<?php echo $eff;?>% efficient
+																						</span>
+																				</div>
+																				<div class="guiMinerShares">
+																						<span>
+																							Shares:<?php echo $totalValidShares;?> Accepted | <?php echo ($totalShares-$totalValidShares);?> Invalid
+																						</span>
+																				</div>
 																		</div>
 																	</div>
 																	<hr size="1" width="100%"/>

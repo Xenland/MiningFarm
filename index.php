@@ -44,6 +44,24 @@ include($header);
 											<div class="art-post-body">
 												<div class="art-post-inner art-article">
 													<div class="art-postcontent">
+														<div class="socialBar">
+															<div>
+															<!-- AddThis Button BEGIN -->
+															<div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+															<a class="addthis_button_preferred_1"></a>
+															<a class="addthis_button_preferred_2"></a>
+															<a class="addthis_button_preferred_3"></a>
+															<a class="addthis_button_preferred_4"></a>
+															<a class="addthis_button_compact"></a>
+															<a class="addthis_counter addthis_bubble_style"></a>
+															</div>
+															<script type="text/javascript">var addthis_config = {"data_track_clickback":true,"data_track_addressbar":true};</script>
+															<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e22713a770589c9"></script>
+															<!-- AddThis Button END -->
+															</div>
+														</div>
+													</div>
+													<div class="art-postcontent">
 															<!-- Show the last blog post reported this way the graphs don't get in the way of the blogs -->
 															<?php
 																//Get last blog post

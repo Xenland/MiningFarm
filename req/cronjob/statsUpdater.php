@@ -61,16 +61,28 @@ while($worker = mysql_fetch_array($poolWorkersQ)){
 				$hashesPerSecond /= 1024;
 				$hashesPerSecond = floor($hashesPerSecond);
 				
+			//Get efficiency
+				$efficienctSharesQ = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `epochTimestamp` >= $fifteenMinutesAgo AND `our_result` = 'Y'");
+				$inefficienctSharesQ = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `epochTimestamp` >= $fifteenMinutesAgo AND `our_result` = 'N'");
+				
+				$numEfficient = mysql_num_rows($efficientSharesQ);
+				$numIneffecient = mysql_num_rows($ineffiecientSharesQ);
+				
+				$efficency = $numEfficient/($numEfficient+$numIneffecient);
+				
 			//Insert into database
-				mysql_query("INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `timestamp`) VALUES('".$worker["username"]."', '".$hashesPerSecond."', '".$recordedTime."')")or die(mysql_error());
+				mysql_query("INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `efficiency`, `timestamp`) VALUES('".$worker["username"]."', '".$hashesPerSecond."', '".$efficency."', '".$recordedTime."')")or die(mysql_error());
+		}else{
+			//Insert into database 0mhash/s
+				mysql_query("INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `efficiency`, `timestamp`) VALUES('".$worker["username"]."', '0', '0', '".$recordedTime."')")or die(mysql_error());
 		}
 	
 }
 
 //Get average Mhash for the entire pool
-$poolAverageHashQ = mysql_query("SELECT `mhashes` FROM `stats_userMHashHistory` WHERE `mhashes` > 0 AND `timestamp` = '".$recordedTime."'");
-$numPoolHashRows = mysql_num_rows($poolAverageHashQ);
-$averagePoolHash = 0;
+	$poolAverageHashQ = mysql_query("SELECT `mhashes` FROM `stats_userMHashHistory` WHERE `mhashes` > 0 AND `timestamp` = '".$recordedTime."'");
+	$numPoolHashRows = mysql_num_rows($poolAverageHashQ);
+	$averagePoolHash = 0;
 
 	while($poolHash = mysql_fetch_array($poolAverageHashQ)){
 		$averagePoolHash += $poolHash["mhashes"];
@@ -80,8 +92,9 @@ $averagePoolHash = 0;
 	}
 
 //Get total Mhash for entire pool
-$poolTotalHashQ = mysql_query("SELECT DISTINCT `username` FROM `stats_userMHashHistory` WHERE `mhashes` > 0 AND `timestamp` = '".$recordedTime."'");
-$poolTotalRows = mysql_num_rows($poolTotalHashQ);
+	$poolTotalHashQ = mysql_query("SELECT DISTINCT `username` FROM `stats_userMHashHistory` WHERE `mhashes` > 0 AND `timestamp` = '".$recordedTime."'");
+	$poolTotalRows = mysql_num_rows($poolTotalHashQ);
+	
 	//Loop through every username get the hash and add it up to the total
 		$totalPoolHash = 0;
 		while($user = mysql_fetch_array($poolTotalHashQ)){
@@ -90,15 +103,16 @@ $poolTotalRows = mysql_num_rows($poolTotalHashQ);
 				$totalHash = mysql_fetch_object($totalHashQ);
 				$totalPoolHash += $totalHash->mhashes;
 		}
+		
 //Add pool average & pool total to table
 mysql_query("INSERT INTO `stats_poolMHashHistory` (`timestamp`, `averageMhash`, `totalMhash`)
 						VALUES('$recordedTime', '$averagePoolHash', '$totalPoolHash')")or die(mysql_error());
 
 
 //Purge stats longer then one hour ago
-$oneHourAgo = time();
-$oneHourAgo -= 60*60;
+$thirtyMinsAgo = time();
+$thirtyMinsAgo -= 60*30;
 
-mysql_query("DELETE FROM `stats_poolMHashHistory` WHERE `timestamp` <= '$oneHourAgo'");
-mysql_query("DELETE FROM `stats_userMHashHistory` WHERE `timestamp` <= '$oneHourAgo'");
+mysql_query("DELETE FROM `stats_poolMHashHistory` WHERE `timestamp` <= '$thirtyMinsAgo'");
+mysql_query("DELETE FROM `stats_userMHashHistory` WHERE `timestamp` <= '$thirtyMinsAgo'");
 ?>

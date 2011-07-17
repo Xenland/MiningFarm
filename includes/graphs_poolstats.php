@@ -16,12 +16,9 @@
 																	$userTotalArray	= '';
 																	$timeHashArray = '';
 																	
-																	$multiWorkerNameArray 		= '';
-																	$multiWorkerHashArray	= '';
-																	
 																//Generate pool array from last fifteen mintutes of data
 																	$i = 0;
-																	$poolTotalQuery = mysql_query('SELECT `totalMhash`, `timestamp` FROM `stats_poolMHashHistory` WHERE `timestamp` >= '.$fifteenMinutesAgo.' ORDER BY `timestamp` ASC');
+																	$poolTotalQuery = mysql_query('SELECT `totalMhash`, `timestamp` FROM `stats_poolMHashHistory` WHERE `timestamp` >= "'.$fifteenMinutesAgo.'" ORDER BY `id` ASC');
 																	while($poolStat = mysql_fetch_array($poolTotalQuery)){
 											
 																		//add divider if neccesarry
@@ -33,8 +30,7 @@
 																			
 																		//add data to graph
 																			$poolArray .= $poolStat["totalMhash"];
-																			
-																			$timeHashArray .= "'".date("g:s", $poolStat["timestamp"])."'";
+																			$timeHashArray .= "'".date("G:i", $poolStat["timestamp"])."'";
 																	
 														
 																		//Generate user total mhash array for display(If they are logged in)
@@ -51,11 +47,12 @@
 																									}
 																							
 																								//Query total mining powa at this timestamp
-																									$miningPowa = mysql_query('SELECT sum(`mhashes`) AS `UserTotal` FROM `stats_userMHashHistory` WHERE `username` LIKE "'.$getCredientials->username.'.%" AND `timestamp` = "'.$poolStat["timestamp"].'" AND `mhashes` > 0');
+																									$miningPowa = mysql_query('SELECT SUM(mhashes) AS `UserTotal` FROM `stats_userMHashHistory` WHERE `username` LIKE "'.$getCredientials->username.'.%" AND `timestamp` = "'.$poolStat["timestamp"].'"');
 																									$miningPowaObj = mysql_fetch_object($miningPowa);
-																								
+																									
 																							//Add data to graph
 																								$userTotalArray .= $miningPowaObj->UserTotal;
+																								
 																						
 																						}
 																							
@@ -85,8 +82,20 @@
 																			text: 'Mega-Hashes'
 																		}
 																	},
+																	 plotOptions: {
+																		line: {
+																			dataLabels: {
+																				enabled: true
+																			},
+																			enableMouseTracking: false
+																		}
+																		},
 																	series: [{
 																		name: 'Pool ',
+																		data: [<?php echo $poolArray; ?>]
+																		},
+																		{
+																		name: 'Pool Valid Shares',
 																		data: [<?php echo $poolArray; ?>]
 																		}
 																		<?php if($userTotalArray != ''){?>

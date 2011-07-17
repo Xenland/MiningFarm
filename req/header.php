@@ -36,11 +36,13 @@ connectToDb();
 <?php
 		}
 ?>
-
 		<!--High Charts Javascript area-->
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
 		<script src="/js/highcharts/highcharts.js" type="text/javascript"></script>
 		<script type="text/javascript" src="/js/highcharts/themes/greenlikemoney.js"></script>
+		
+		<!-- Place this tag in your head or just before your close body tag -->
+		<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
 	</head>
 	<body>
 		<div id="art-page-background-glare">
@@ -53,7 +55,6 @@ connectToDb();
 							<div class="art-header-inner">
 								<div class="art-logo">
 									<div class="logoHeader">
-									
 									</div>
 								</div>
 								
@@ -249,19 +250,21 @@ connectToDb();
 					</div>
 					<!-- End of Line for class="art-nav" or navigation to be precise -->
 					<div style="width:99%;overflow-x:hidden; margin:0 auto;text-align:center;padding:1em;">
-						<script type="text/javascript"><!--
-						google_ad_client = "ca-pub-2226221363593609";
-						/* MiningFarm -Redistrubutable Top */
-						google_ad_slot = "8140870042";
-						google_ad_width = 728;
-						google_ad_height = 90;
-						//-->
-						</script>
-						<script type="text/javascript"
-						src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-						</script>
-						<div style="display:none;">
-							<!--Set some tags so google can know WTF this site is about when first installed -->
-							<b>Bitcoin</b>,<b>Bitcoins</b><b>Mining</b>, <b>Farm</b>, <b>Mining Farm</b>, <b>Collect bitcoins</b>, <b>Freedom</b>, <b>small government</b>
+						<div>
+							<script type="text/javascript"><!--
+							google_ad_client = "ca-pub-2226221363593609";
+							/* MiningFarm -Redistrubutable Top */
+							google_ad_slot = "8140870042";
+							google_ad_width = 728;
+							google_ad_height = 90;
+							//-->
+							</script>
+							<script type="text/javascript"
+							src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+							</script>
+							<div style="display:none;">
+								<!--Set some tags so google can know WTF this site is about when first installed -->
+								<b>Bitcoin</b>,<b>Bitcoins</b><b>Mining</b>, <b>Farm</b>, <b>Mining Farm</b>, <b>Collect bitcoins</b>, <b>Freedom</b>, <b>small government</b>
+							</div>
 						</div>
 					</div>
