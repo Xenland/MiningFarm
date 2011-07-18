@@ -63,12 +63,13 @@ while($worker = mysql_fetch_array($poolWorkersQ)){
 				
 			//Get efficiency
 				$efficienctSharesQ = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `epochTimestamp` >= $fifteenMinutesAgo AND `our_result` = 'Y'");
-				$inefficienctSharesQ = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `epochTimestamp` >= $fifteenMinutesAgo AND `our_result` = 'N'");
+				$totalSharesQ = mysql_query("SELECT `id` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `epochTimestamp` >= $fifteenMinutesAgo");
 				
-				$numEfficient = mysql_num_rows($efficientSharesQ);
-				$numIneffecient = mysql_num_rows($ineffiecientSharesQ);
+				$numEfficient = mysql_num_rows($efficienctSharesQ);
+				$totalShares = mysql_num_rows($totalSharesQ);
 				
-				$efficency = $numEfficient/($numEfficient+$numIneffecient);
+				//Efficency = (Valid Shares / Total Shares ) * 100%
+				$efficency = ($numEfficient/$totalShares)*100;
 				
 			//Insert into database
 				mysql_query("INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `efficiency`, `timestamp`) VALUES('".$worker["username"]."', '".$hashesPerSecond."', '".$efficency."', '".$recordedTime."')")or die(mysql_error());

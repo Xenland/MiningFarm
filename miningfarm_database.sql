@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 17, 2011 at 04:39 PM
+-- Generation Time: Jul 18, 2011 at 12:58 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -33,7 +33,15 @@ CREATE TABLE IF NOT EXISTS `accountBalance` (
   `threshhold` varchar(5) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userId` (`userId`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `accountBalance`
+--
+
+INSERT INTO `accountBalance` (`id`, `userId`, `balance`, `payoutAddress`, `threshhold`) VALUES
+(1, 1, '0.00', '', ''),
+(2, 2, '0.00', '', '');
 
 -- --------------------------------------------------------
 
@@ -48,6 +56,13 @@ CREATE TABLE IF NOT EXISTS `blogPosts` (
   `message` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `blogPosts`
+--
+
+INSERT INTO `blogPosts` (`id`, `timestamp`, `title`, `message`) VALUES
+(4, 0, 'What we do?', '<div style="float:left;">\r\n<iframe width="360" height="224" src="http://www.youtube.com/embed/Um63OQz3bjo" frameborder="0" allowfullscreen></iframe>\r\n</div>\r\n<div style="padding:1em 1em 1em 1em;">\r\nFirst off welcome to the "Mining Farm" you can run your computer to mine an Internet Commodity known as "Bitcoins". These <i>Bitcoins</i> can be used to purchase many things such as Alpaca socks, Webhosting, or even VOIP phone services, the list goes on.<br/><br/>\r\n\r\nWikipedia explains bitcoins a little bit better by stating: Bitcoin enables rapid payments (and micropayments) at very low cost, and avoids the need for central authorities and issuers. Digitally signed transactions, with one node signing over some amount of the currency to another node, are broadcast to all nodes in a peer-to-peer network. A proof-of-work system is used as measurement against double-spending and initial currency distribution mechanism.<br/>\r\n<a href="http://en.wikipedia.org/wiki/Bitcoin" target="_BLANK">WikiePedia Source</a>\r\n</div>');
 
 -- --------------------------------------------------------
 
@@ -64,6 +79,15 @@ CREATE TABLE IF NOT EXISTS `donationList` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
+--
+-- Dumping data for table `donationList`
+--
+
+INSERT INTO `donationList` (`id`, `locked`, `display`, `bitcoinAddress`, `coinAddresstype`) VALUES
+(2, 1, 'Mining Farm (The software this website runs off of)', 'MwSnUuXvrsfa35BSGMhUymtWUkXKSnJie9', 2),
+(3, 1, 'Mining Farm (The website software you are using)', '1Fc2ScswXAHPUgj3qzmbRmwWJSLL2yv8Q', 1),
+(4, 1, 'RedCross', '1HRQGDVYvQAkVh5xJetKeNfdKYWcx62cKt', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -79,7 +103,23 @@ CREATE TABLE IF NOT EXISTS `menuAddition` (
   `requireAdmin` int(1) NOT NULL,
   `order` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+
+--
+-- Dumping data for table `menuAddition`
+--
+
+INSERT INTO `menuAddition` (`id`, `displayTitle`, `url`, `matches`, `requireLogin`, `requireAdmin`, `order`) VALUES
+(1, 'Welcome', '/', 'index.php, /', 0, 0, 1),
+(2, 'Account Details', '/accountDetails.php', '/accountDetails.php', 1, 0, 3),
+(3, 'Statistics', '/stats.php', '/stats.php', 0, 0, 2),
+(4, 'Administration', '/adminPanel.php', '/adminPanel.php', 1, 1, 4),
+(5, 'User Privileges', '/adminPanel.php?show=editUsers', '/adminPanel.php?show=editUsers', 1, 1, 5),
+(6, 'Workers', '/workers.php', '/workers.php', 1, 0, 7),
+(8, 'Download 5.0.5', 'https://github.com/Xenland/MiningFarm/tarball/master', '', 0, 0, 11),
+(9, 'Git Hub', 'https://github.com/Xenland/MiningFarm', '', 0, 0, 12),
+(11, 'Blog Editor', '/adminPanel.php?show=blogEditor', '/adminPanel.php?show=blogEditor', 1, 1, 12),
+(12, 'Forums', '/smf', '', 0, 0, 14);
 
 -- --------------------------------------------------------
 
@@ -96,8 +136,11 @@ CREATE TABLE IF NOT EXISTS `networkBlocks` (
   `orphan` int(1) NOT NULL,
   `serverFeeCollected` int(1) NOT NULL COMMENT 'Lets blockFound.php know that the server fee was collected from this block to prevent multiple server fee collections',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
 
+--
+-- Dumping data for table `networkBlocks`
+--
 -- --------------------------------------------------------
 
 --
@@ -112,6 +155,10 @@ CREATE TABLE IF NOT EXISTS `pool_worker` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `pool_worker`
+--
 
 -- --------------------------------------------------------
 
@@ -130,8 +177,11 @@ CREATE TABLE IF NOT EXISTS `shares` (
   `reason` varchar(50) DEFAULT NULL,
   `solution` varchar(257) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1096 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1471 ;
 
+--
+-- Dumping data for table `shares`
+--
 -- --------------------------------------------------------
 
 --
@@ -150,6 +200,11 @@ CREATE TABLE IF NOT EXISTS `shares_dead` (
   `solution` varchar(257) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `shares_dead`
+--
+
 
 -- --------------------------------------------------------
 
@@ -171,6 +226,11 @@ CREATE TABLE IF NOT EXISTS `shares_history` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3013357 ;
 
+--
+-- Dumping data for table `shares_history`
+--
+
+
 -- --------------------------------------------------------
 
 --
@@ -183,8 +243,11 @@ CREATE TABLE IF NOT EXISTS `stats_bitcoinConversionHistory` (
   `mtgox` int(5) NOT NULL,
   `timestamp` int(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=404 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=498 ;
 
+--
+-- Dumping data for table `stats_bitcoinConversionHistory`
+--
 -- --------------------------------------------------------
 
 --
@@ -198,8 +261,11 @@ CREATE TABLE IF NOT EXISTS `stats_poolMHashHistory` (
   `totalValidShares` int(255) NOT NULL,
   `timestamp` int(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=957 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2184 ;
 
+--
+-- Dumping data for table `stats_poolMHashHistory`
+--
 -- --------------------------------------------------------
 
 --
@@ -213,8 +279,11 @@ CREATE TABLE IF NOT EXISTS `stats_userMHashHistory` (
   `efficiency` varchar(5) NOT NULL,
   `timestamp` int(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3477 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4704 ;
 
+--
+-- Dumping data for table `stats_userMHashHistory`
+--
 -- --------------------------------------------------------
 
 --
@@ -236,8 +305,13 @@ CREATE TABLE IF NOT EXISTS `websiteSettings` (
   `enableRequiredEmail` int(1) NOT NULL COMMENT 'Boolean for enabled emails to be authorized',
   `coinType` int(3) NOT NULL COMMENT '1=Bitcoin website; 2 = namecoind website'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-INSERT INTO `websiteSettings` (`noreplyEmail`, `confirmEmailPrefix`, `browserTitle`, `cashoutMinimum`, `serverFeePercentage`, `serverFeeRemoteAddress`, `serverFeeAccountBalance`, `tradeHillWorth`, `mtgoxWorth`, `currencyData`, `stats_showallusers`, `enableRequiredEmail`) VALUES
-('noreply@noreply.com', 'Welcome to the Pool, You must activate your account before we can progress you any further. Click the link below and type in your credentials(if necessary) then we should be able to activate your account from there and start mining miners. :)\\n', 'Running Mining Farm By MIningFarm.com', '0.02', '1', '', '0', '13.98', '0', 'tradehill-USD', 1, 0);
+
+--
+-- Dumping data for table `websiteSettings`
+--
+
+INSERT INTO `websiteSettings` (`noreplyEmail`, `confirmEmailPrefix`, `browserTitle`, `cashoutMinimum`, `serverFeePercentage`, `serverFeeRemoteAddress`, `serverFeeAccountBalance`, `tradeHillWorth`, `mtgoxWorth`, `currencyData`, `stats_showallusers`, `enableRequiredEmail`, `coinType`) VALUES
+('noreply@noreply.com', 'Welcome to the Pool, You must activate your account before we can progress you any further. Click the link below and type in your credentials(if necessary) then we should be able to activate your account from there and start mining miners. :)\\n', 'Mining Farm Official Vendor website', '0.02', '1', '', '211', '12.58', '0', 'btc', 1, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -262,4 +336,8 @@ CREATE TABLE IF NOT EXISTS `websiteUsers` (
   `failedLoginTimestampLock` int(255) NOT NULL COMMENT 'Epoch time until user is allowed access to page',
   `apiToken` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `websiteUsers`
+--

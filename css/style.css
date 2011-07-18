@@ -13,15 +13,6 @@ body{
 	ubuntu;
 }
 
-a{
-	color:#FFF;
-	font-weight:bold;
-	font-size:1.3em;
-}
-a:hover{
-	color:#E0E411;
-}
-
 #art-main, table
 {
     font-family: ubuntu, Arial, Helvetica, Sans-Serif;
@@ -278,7 +269,7 @@ div.art-header
   margin: 0 auto;
   position: relative;
   width:800px;
-  height: 104px;
+  height: 106px;
   overflow: hidden;
   margin-top: 20px;
   margin-bottom: -3px;
@@ -1822,8 +1813,8 @@ div.userInfo {
 	font-family:ubuntu, Arial, Helvetica, sans-serif;
 	float:right;
 	text-align:left;
-	padding:.2em 1em 0 1.2em;
-	color:#FFF;
+	padding:1em 1em 0 1.2em;
+	color:#6a8397;
 }
 
 span.userText{
@@ -1833,13 +1824,16 @@ span.userText{
 
 /*--User Panel / Text--*/
 span.bitcoinWorth{
-	color: #F1ED05;
+	/*color: #F1ED05;*/
+	color:#000;
 }
 span.estimated{
-	color:#F1ED05;
+	/*color:#F1ED05;*/
+	color:#000;
 }
 span.unconfirmed{
-	color:#E0E411;
+	/*color:#E0E411;*/
+	color:#000;
 }
 
 span.confirmedBalance{
@@ -1881,4 +1875,9 @@ p.footerText{
 @font-face {
 	font-family: ubuntu;
 	src: url('/css/fonts/Ubuntu-BI.ttf');
+}
+
+.socialBar{
+	text-align:center;
+	margin:0 auto;
 }

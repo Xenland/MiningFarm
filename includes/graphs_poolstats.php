@@ -15,6 +15,7 @@
 																	$poolArray		= '';
 																	$userTotalArray	= '';
 																	$timeHashArray = '';
+																	$userEfficiencyArray = '';
 																	
 																//Generate pool array from last fifteen mintutes of data
 																	$i = 0;
@@ -44,14 +45,19 @@
 																								//Add divider(if neccessary)
 																									if($i > 1){
 																										$userTotalArray .= ',';
+																										$userEfficiencyArray .= ',';
 																									}
 																							
 																								//Query total mining powa at this timestamp
-																									$miningPowa = mysql_query('SELECT SUM(mhashes) AS `UserTotal` FROM `stats_userMHashHistory` WHERE `username` LIKE "'.$getCredientials->username.'.%" AND `timestamp` = "'.$poolStat["timestamp"].'"');
+																									$miningPowa = mysql_query('SELECT SUM(mhashes) AS `UserTotal` FROM `stats_userMHashHistory` WHERE `username` LIKE "'.$getCredientials->username.'.%" AND `timestamp` = "'.$poolStat["timestamp"].'"')or die(mysql_error());
 																									$miningPowaObj = mysql_fetch_object($miningPowa);
 																									
+																								//Query total efficiency at this timestamp
+																										$totalEfficenyQ = mysql_query('SELECT SUM(efficiency) as `TotalEfficency` FROM `stats_userMHashHistory` WHERE `username` LIKE "'.$getCredientials->username.'.%" AND `timestamp` = "'.$poolStat["timestamp"].'"')or die(mysql_error());
+																										$totalEfficenyObj = mysql_fetch_object($totalEfficenyQ);
 																							//Add data to graph
 																								$userTotalArray .= $miningPowaObj->UserTotal;
+																								$userEfficiencyArray .= $totalEfficenyObj->TotalEfficency;
 																								
 																						
 																						}
@@ -91,16 +97,16 @@
 																		}
 																		},
 																	series: [{
-																		name: 'Pool ',
+																		name: 'Total Pool',
 																		data: [<?php echo $poolArray; ?>]
 																		},
-																		{
-																		name: 'Pool Valid Shares',
-																		data: [<?php echo $poolArray; ?>]
-																		}
 																		<?php if($userTotalArray != ''){?>
+																		{
+																		name: 'Your Total Worker efficiency in %',
+																		data: [<?php echo $userEfficiencyArray; ?>]
+																		}
 																		,{
-																		name: 'Total User',
+																		name: 'Total User Megahashes',
 																		data: [<?php echo $userTotalArray;?>]
 																		}
 																		<?php } ?>]
