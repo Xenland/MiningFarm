@@ -210,7 +210,30 @@ include($header);
 																	}
 																</style>
 																<script type="text/javascript">
-																
+																	//Just delete everything except the username it self
+																	function updateWorker(fieldId){
+																		//Split username
+																			var workerName = document.getElementById('worker-'+fieldId).value;
+																			
+																			var workerArray =  workerName.split('.');
+																			//Only remove the [0] index if "." was found
+																			if(workerArray.length > 1){
+																				//Remove the first index of workerArray and output JUST the worker name
+																					var outputWorkername = '';
+																					for(var i=0; i<workerArray.length; i++){
+																						if(i > 0){
+																							outputWorkername += workerArray[i];
+																						}
+																					}
+																			}else{
+																				//Scince there was no "." dot found just display workername
+																					outputWorkername = workerArray[0];
+																			}
+																					
+																		//Output new username
+																			document.getElementById('worker-'+fieldId).value = outputWorkername;
+																			
+																	}
 																</script>
 																<p>
 																This is your worker managment area here you can Update, and Delete your miners.
@@ -269,7 +292,7 @@ include($header);
 																				</div>
 																				<form action="workers.php" method="post">
 																					<input type="hidden" name="workerId" value="<?=$worker["id"]?>">
-																					<input type="text" name="username" value="<?php echo $splitUser[0]; ?>.<?php echo $splitUser[1]; ?>" size="18" class="guiMinerUser"> <input type="text" name="password" size="11" class="guiMinerPass" value="<?php echo $worker["password"];?>" size="10">
+																					<input type="text" name="username" value="<?php echo $splitUser[0].".".$splitUser[1]; ?>" size="18" class="guiMinerUser" id="worker-<?php echo $worker["id"];?>" onKeyUp="javascript:updateWorker(<?php echo $worker["id"];?>)"> <input type="text" name="password" size="11" class="guiMinerPass" value="<?php echo $worker["password"];?>" size="10">
 																					<br/>
 																					<input type="submit" name="act" value="<?php echo gettext("Update");?>" class="guiMinerUpdate"/><input type="submit" name="act" value="<?php echo gettext("Delete");?>" class="guiMinerDelete"/><br/>
 																				

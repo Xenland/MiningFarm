@@ -1881,3 +1881,25 @@ p.footerText{
 	text-align:center;
 	margin:0 auto;
 }
+
+.logoHeader{
+	position:relative;
+	top:1em;
+	left:13em;
+	width:25em;
+	text-align:center;
+	color:#7c97aa;
+	font-size:1.3em;
+	font-weight:bold;
+}
+
+/*--Server Status Display --*/
+.serverStatus{
+	width:100%;
+	text-align:center;
+	font-size:1.3em;
+	font-weight:bold;
+}
+.lowServerLoad{
+	color:green;
+}

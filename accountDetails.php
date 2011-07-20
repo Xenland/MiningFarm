@@ -186,7 +186,7 @@ include($header);
 																		<form action="accountDetails.php" method="post">
 																		<input type="hidden" name="act" value="editIdentity">
 																		<?php echo gettext("Payout Address");?>:<input type="text" size="32" name="payoutAddress" value="<?php echo $getCredientials->sendAddress;?>"><br/>
-																		<?php echo gettext("Automatic Payout at");?>:<input type="text" size="5" name="payoutThreashHold" value="<?php if(!isSet($getCredientials->threashhold)){ echo "0.5";}else{ echo $getCredientials->threashhold;}?>"><b>BTC</b> (0 = <?php echo gettext("Disabled");?>)<br/>
+																		<?php echo gettext("Automatic Payout at");?>:<input type="text" size="5" name="payoutThreashHold" value="<?php if(!isSet($getCredientials->threshhold)){ echo "0.5";}else{ echo $getCredientials->threshhold;}?>"><b>BTC</b> (0 = <?php echo gettext("Disabled");?>)<br/>
 																		<i><?php echo gettext("Authorisation Pin");?>:</i> <input type="password" name="authPin" value="" size="4" maxlength="4"><br/>
 																		<hr size="1" width="100%">
 																		<input type="submit" value="<?php echo gettext("Update Payout Address");?>">

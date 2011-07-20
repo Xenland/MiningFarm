@@ -291,13 +291,14 @@ class getCredientials{
 				
 		//Set stats variables
 			$this->username		= $username;
-			$this->totalShares	= $totalShares;
+			$this->totalShares		= $totalShares;
 			$this->totalPoolShares	= $totalPoolShares;
 			$this->estimatedReward	= $estReward;
 			$this->pendingBalance	= $unconfirmedBalance;
 			$this->accountBalance 	= round($balance, 8);
-			$this->email		= $email;
-			$this->sendAddress	= $sendAddress;
+			$this->email			= $email;
+			$this->sendAddress		= $sendAddress;
+			$this->threshhold		= $threshhold;
 
 		return true;
 	}
