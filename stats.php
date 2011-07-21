@@ -48,6 +48,121 @@ include($header);
 												<div class="art-post-inner art-article">
 													<div class="art-postcontent">
 														<div class="blogContainer">
+															<table width="100%" cellpadding="0" cellspacing="0">
+																<tdbody>
+																	<tr>
+																		<td>
+																			<!--Top shares-->
+																				<div class="topshares-stats" style="width:100%;float:left;">
+																					<div class="blogHeader">
+																						<h1 class="blogHeader">
+																							Top shares this round
+																						</h1>	
+																					</div>
+																					<div class="blogContent">
+																							
+																						<table width="100%" cellpadding="0" cellspacing="0">
+																							<tdbody>
+																								<tr>
+																									<td>
+																										<b># Rank</b>
+																									</td>
+																									<td>
+																										<b>Display Name</b>
+																									</td>
+																									<td>
+																										<b>Shares</b>
+																									</td>
+																								</tr>
+																							<?php
+																								//Get the top 10 share submitters
+																									//go through list of workers and get top shares
+																										$i = 0;
+																										$getWorkerList = mysql_query("SELECT `userId`, `shares` FROM `stats_topSharers` ORDER BY `shares` DESC LIMIT 0,10");
+																										while($worker = mysql_fetch_array($getWorkerList)){
+																											$i++;
+																											//Get username
+																												$usernameQ = mysql_query("SELECT `username` FROM `websiteUsers` WHERE `id` = '".$worker["userId"]."' LIMIT 0,1")or die(mysql_error());
+																												$username = mysql_fetch_object($usernameQ);
+																							?>
+																								<tr>
+																									<td>
+																										<?php echo $i;?>
+																									</td>
+																									<td>
+																										<?php echo $username->username;?>
+																									</td>
+																									<td>
+																										<?php echo $worker["shares"];?>
+																									</td>
+																								</tr>
+																							<?php
+																										}
+																							?>
+																							</tdbody>
+																						</table>
+																					</div>
+																				</div>
+																		</td>
+																		<td>
+																				<div class="topshares-stats" style="width:100%;">
+																					<div class="blogHeader">
+																						<h1 class="blogHeader">
+																							Top Hashers this round
+																						</h1>	
+																					</div>
+																					<div class="blogContent">
+																							
+																						<table width="100%" cellpadding="0" cellspacing="0">
+																							<tdbody>
+																								<tr>
+																									<td>
+																										# Rank
+																									</td>
+																									<td>
+																										<b>Display Name</b>
+																									</td>
+																									<td>
+																										<b>Mhash</b>
+																									</td>
+																								</tr>
+																							<?php
+																								//Get the top 10 share submitters
+																									//go through list of workers and get top shares
+																										$i = 0;
+																										$getWorkerList = mysql_query("SELECT `userId`, `totalHashes` FROM `stats_topHashers` ORDER BY `totalHashes` DESC LIMIT 0,10")or die(mysql_error());
+																										while($worker = mysql_fetch_array($getWorkerList)){
+																											$i++;
+																											//Get username
+																												$usernameQ = mysql_query("SELECT `username` FROM `websiteUsers` WHERE `id` = '".$worker["userId"]."' LIMIT 0,1")or die(mysql_error());
+																												$username = mysql_fetch_object($usernameQ);
+																							?>
+																								<tr>
+																									<td>
+																										<?php echo $i;?>
+																									</td>
+																									<td>
+																										<?php echo $username->username;?>
+																									</td>
+																									<td>
+																										<?php echo $worker["totalHashes"];?>
+																									</td>
+																								</tr>
+																							<?php
+																										}
+																							?>
+																							</tdbody>
+																						</table>
+																					</div>
+																				</div>
+																		</td>
+																	</tr>
+																</tdbody>
+															</table>
+														
+														
+														
+														<!--Block awaiting confirmations-->
 																<div class="blogHeader">
 																	<h1 class="blogHeader">
 																		Block's Awaiting Confirmation

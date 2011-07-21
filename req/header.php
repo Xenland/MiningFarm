@@ -132,9 +132,13 @@ connectToDb();
 										//Display menu and set class="active" to the filename that matches the currently viewed page
 											$retireveMenu = mysql_query("SELECT `displayTitle`, `url`, `matches`, `requireLogin`, `requireAdmin` FROM `menuAddition` ORDER BY `order` ASC")or die(mysql_error());
 											
-											
+											$maxItems = 6;
+											$i = 0;
 											//Display Users menu (Logged in or Not)
 												while($menu = mysql_fetch_array($retireveMenu)){
+													//Increment
+														$i++;
+														
 													$showItem = 0;
 													/*Before we output this menu item, 
 														1]Find out if we have to display it in the first place
@@ -189,6 +193,12 @@ connectToDb();
 										</a>
 									</li>
 <?php
+									//If increment mataches maxItems or is greater, reset and add a new row
+										if($i >= $maxItems){
+											$i=0;
+											echo '</ul></div>';
+											echo '<div class="art-nav-inner"><ul class="art-menu">';
+										}
 													}
 												}
 ?>

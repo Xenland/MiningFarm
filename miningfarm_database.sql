@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 20, 2011 at 01:50 PM
+-- Generation Time: Jul 21, 2011 at 03:34 PM
 -- Server version: 5.1.41
 -- PHP Version: 5.3.2-1ubuntu4.9
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `accountBalance` (
   `threshhold` varchar(5) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userId` (`userId`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `accountBalance`
@@ -113,7 +113,7 @@ INSERT INTO `menuAddition` (`id`, `displayTitle`, `url`, `matches`, `requireLogi
 (4, 'Administration', '/adminPanel.php', '/adminPanel.php', 1, 1, 4),
 (5, 'User Privileges', '/adminPanel.php?show=editUsers', '/adminPanel.php?show=editUsers', 1, 1, 5),
 (6, 'Workers', '/workers.php', '/workers.php', 1, 0, 7),
-(11, 'Blog Editor', '/adminPanel.php?show=blogEditor', '/adminPanel.php?show=blogEditor', 1, 1, 12),;
+(11, 'Blog Editor', '/adminPanel.php?show=blogEditor', '/adminPanel.php?show=blogEditor', 1, 1, 12);
 
 -- --------------------------------------------------------
 
@@ -130,12 +130,11 @@ CREATE TABLE IF NOT EXISTS `networkBlocks` (
   `orphan` int(1) NOT NULL,
   `serverFeeCollected` int(1) NOT NULL COMMENT 'Lets blockFound.php know that the server fee was collected from this block to prevent multiple server fee collections',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=164 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=400 ;
 
 --
 -- Dumping data for table `networkBlocks`
 --
-
 -- --------------------------------------------------------
 
 --
@@ -149,13 +148,11 @@ CREATE TABLE IF NOT EXISTS `pool_worker` (
   `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `pool_worker`
 --
-
-
 
 -- --------------------------------------------------------
 
@@ -174,12 +171,11 @@ CREATE TABLE IF NOT EXISTS `shares` (
   `reason` varchar(50) DEFAULT NULL,
   `solution` varchar(257) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41309 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41452 ;
 
 --
 -- Dumping data for table `shares`
 --
-
 -- --------------------------------------------------------
 
 --
@@ -241,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `stats_bitcoinConversionHistory` (
   `mtgox` int(5) NOT NULL,
   `timestamp` int(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=726 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=842 ;
 
 --
 -- Dumping data for table `stats_bitcoinConversionHistory`
@@ -260,11 +256,49 @@ CREATE TABLE IF NOT EXISTS `stats_poolMHashHistory` (
   `totalValidShares` int(255) NOT NULL,
   `timestamp` int(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5114 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6538 ;
 
 --
 -- Dumping data for table `stats_poolMHashHistory`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stats_topHashers`
+--
+
+CREATE TABLE IF NOT EXISTS `stats_topHashers` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `userId` int(255) NOT NULL,
+  `totalHashes` int(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+
+--
+-- Dumping data for table `stats_topHashers`
+--
+
+INSERT INTO `stats_topHashers` (`id`, `userId`, `totalHashes`) VALUES
+(31, 5, 63);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stats_topSharers`
+--
+
+CREATE TABLE IF NOT EXISTS `stats_topSharers` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `userId` varchar(255) NOT NULL,
+  `shares` int(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=240 ;
+
+--
+-- Dumping data for table `stats_topSharers`
+--
+'7', 0);
 
 -- --------------------------------------------------------
 
@@ -279,7 +313,7 @@ CREATE TABLE IF NOT EXISTS `stats_userMHashHistory` (
   `efficiency` varchar(5) NOT NULL,
   `timestamp` int(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18236 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18471 ;
 
 --
 -- Dumping data for table `stats_userMHashHistory`
@@ -312,7 +346,7 @@ CREATE TABLE IF NOT EXISTS `websiteSettings` (
 --
 
 INSERT INTO `websiteSettings` (`noreplyEmail`, `confirmEmailPrefix`, `browserTitle`, `cashoutMinimum`, `serverFeePercentage`, `serverFeeRemoteAddress`, `serverFeeAccountBalance`, `tradeHillWorth`, `mtgoxWorth`, `currencyData`, `stats_showallusers`, `enableRequiredEmail`, `coinType`) VALUES
-('noreply@noreply.com', 'Welcome to the Pool, You must activate your account before we can progress you any further. Click the link below and type in your credentials(if necessary) then we should be able to activate your account from there and start mining miners. :)\\n', 'Mining Farm Official Vendor website', '0.02', '1', '', '211', '13.72', '0', 'btc', 1, 0, 2);
+('noreply@noreply.com', 'Welcome to the Pool, You must activate your account before we can progress you any further. Click the link below and type in your credentials(if necessary) then we should be able to activate your account from there and start mining miners. :)\\n', 'Mining Farm Official Vendor website', '0.02', '1', '', '211', '13.55', '0', 'btc', 1, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -337,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `websiteUsers` (
   `failedLoginTimestampLock` int(255) NOT NULL COMMENT 'Epoch time until user is allowed access to page',
   `apiToken` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `websiteUsers`
