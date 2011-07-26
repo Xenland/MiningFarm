@@ -61,43 +61,7 @@ include($header);
 															</div>
 														</div>
 														<hr size="1" width="100%"/>
-														<div class="serverStatus">
-														<?php
-														//Get total shares
-															$totalSharesQ = mysql_query("SELECT `id` FROM `shares` WHERE `our_result` = 'Y'");
-															$totalShares = mysql_num_rows($totalSharesQ);
-															
-														//GET SERVER LOADS
-															$loadresult = @exec('uptime');
-															preg_match("/averages?: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/",$loadresult,$avgs);
-
-															//GET SERVER UPTIME
-															$uptime = explode(' up ', $loadresult);
-															$uptime = explode(',', $uptime[1]);
-															$uptime = $uptime[0].', '.$uptime[1];
-															
-															//Set variables for serverload average and Updtime
-																$serverLoadAverage = round((($avgs[1]+$avgs[2]+$avgs[3])/3), 2)*100;
-																$uptimeData = $uptime;
-																
-																if($serverLoadAverage < 100){
-																	$type = "highServerLoad";
-																	$loadText = "High";
-																}
-																if($serverLoadAverage < 50){
-																	$type = "medServerLoad";
-																	$loadText = "Medium";
-																}
-																if($serverLoadAverage < 20){
-																	$type = "lowServerLoad";
-																	$loadText = "Low";
-																}
-															echo "IP:".$ip." Port:".$port."<br/>";
-															echo "Shares this round:".$totalShares."<br/>";
-															echo "Server Load: <span class='".$type."'>".$loadText."(".$serverLoadAverage."%)</span><br/>";
-															echo "Server Uptime: ".$uptimeData;
-														?>
-														</div>
+														
 													</div>
 													<div class="art-postcontent">
 															<!-- Show the last blog post reported this way the graphs don't get in the way of the blogs -->

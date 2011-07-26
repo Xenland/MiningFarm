@@ -47,6 +47,7 @@ while($worker = mysql_fetch_array($poolWorkersQ)){
 	//Calculate Mhash/s based on the share information in the last give minutes
 		$sharesQ = mysql_query("SELECT `id`, `epochTimestamp` FROM `shares` WHERE `username` = '".$worker["username"]."' AND `epochTimestamp` >= $fifteenMinutesAgo");
 		$numShares = mysql_num_rows($sharesQ);
+		
 		if($numShares > 0){
 			//Get first share timestamp from the last five minutes
 				$firstTimestamp = mysql_query("SELECT `epochTimestamp` FROM `shares` WHERE `id` = '".$worker["id"]."' AND `epochTimestamp` >= $fifteenMinutesAgo");

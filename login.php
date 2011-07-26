@@ -20,11 +20,10 @@ $loginSuccess = loginUser($_POST["username"], $_POST["password"]);
 
 //Set user details for userInfo box
 $rawCookie = "";
-if(isSet($_COOKIE[$cookieName])){
+if($_COOKIE[$cookieName] == ''){
 	$rawCookie = $_COOKIE[$cookieName];
 	$returnError = "";
 	$goodMessage = "";
-	$loginSuccess = 0;
 }
 
 //Preset refreshtime

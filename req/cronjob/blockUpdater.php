@@ -25,10 +25,12 @@
 		$currentBlockNumber = $bitcoinController->getblocknumber();
 	
 	//Is this block number in the database already
-		$inDatabaseQ = mysql_query("SELECT `id` FROM `networkBlocks` WHERE `blockNumber` = '$currentBlockNumber' LIMIT 0,1");
-		$inDatabase = mysql_num_rows($inDatabaseQ);
-
-		if(!$inDatabase){
+		$inDatabaseQ = mysql_query("SELECT COUNT(`id`) FROM `networkBlocks` WHERE `blockNumber` = '$currentBlockNumber' LIMIT 0,1");
+		$inDatabase = mysql_fetch_row($inDatabaseQ);
+		
+		echo $inDatabase[0];
+	
+		if(!$inDatabase->numBlocks){
 			//Add this block into the `networkBlocks` log
 				$currentTime = time();
 				mysql_query("INSERT INTO `networkBlocks` (`blockNumber`, `timestamp`)
