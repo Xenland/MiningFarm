@@ -25,12 +25,10 @@
 		$currentBlockNumber = $bitcoinController->getblocknumber();
 	
 	//Is this block number in the database already
-		$inDatabaseQ = mysql_query("SELECT COUNT(`id`) FROM `networkBlocks` WHERE `blockNumber` = '$currentBlockNumber' LIMIT 0,1");
-		$inDatabase = mysql_fetch_row($inDatabaseQ);
-		
-		echo $inDatabase[0];
-	
-		if(!$inDatabase->numBlocks){
+		$inDatabaseQ = mysql_query("SELECT `id` FROM `networkBlocks` WHERE `blockNumber` = '$currentBlockNumber' LIMIT 0,1");
+		$inDatabase = mysql_num_rows($inDatabaseQ);
+
+		if(!$inDatabase){
 			//Add this block into the `networkBlocks` log
 				$currentTime = time();
 				mysql_query("INSERT INTO `networkBlocks` (`blockNumber`, `timestamp`)
@@ -85,6 +83,10 @@ try{
 	//calculate average with the provided data (Buy, sell, last sale)
 		$tradeHillWorth = round((($jsonTradedata[ticker][last]+$jsonTradedata[ticker][sell]+$jsonTradedata[ticker][buy])/3), 2);
 	
+	//Insert data
+		mysql_query("INSERT INTO `stats_bitcoinConversionHistory` (`tradehill`, `timestamp`) VALUES('$tradeHillWorth', '".time()."')")or die(mysql_error());
+
+	
 	mysql_query("UPDATE `websiteSettings` SET `tradeHillWorth` = '".$tradeHillWorth."'");
 }catch (Exception $e) {
 	echo "Failed to get TradeHill bitcoioin worth<br/>".$e;
@@ -92,17 +94,8 @@ try{
 
 
 
-if(!empty($tradeHillWorth)){
-	//Check if this is the same rade data as the last inputted row of `stats_bitocinConversionHistory`
-		$lastConversion = mysql_query("SELECT `tradehill` FROM `stats_bitcoinConversionHistory` ORDER BY `timestamp` DESC LIMIT 0,1");
-		$lastConversion = mysql_fetch_object($lastConversion);
-		$lastConversionTradehill = $lastConversion->tradehill;
-		
-		//Only insert new data if this is new data ;)
-			if($lastConversionTradehill != $tradeHillWorth){
-				mysql_query("INSERT INTO `stats_bitcoinConversionHistory` (`tradehill`, `timestamp`) VALUES('$tradeHillWorth', '".time()."')")or die(mysql_error());
-			}
-}
+
+
 
 
 
