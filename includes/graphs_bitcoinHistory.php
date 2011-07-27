@@ -1,7 +1,7 @@
 <?php
 
 //Retireve bitcoin worth history 
-	$bitcoinHistory = mysql_query("SELECT `tradehill`, `timestamp` FROM `stats_bitcoinConversionHistory` ORDER BY `timestamp` ASC LIMIT 0,20");
+	$bitcoinHistory = mysql_query("SELECT `tradehill`, `timestamp` FROM `stats_bitcoinConversionHistory` ORDER BY `id` DESC LIMIT 0,20");
 	
 	$tradeHillArray = "";
 	$tradeHillArrayTime = "";

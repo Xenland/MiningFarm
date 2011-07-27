@@ -81,13 +81,14 @@ try{
 		$jsonTradedata = json_decode($tradedata, true);
 		
 	//calculate average with the provided data (Buy, sell, last sale)
-		$tradeHillWorth = round((($jsonTradedata[ticker][last]+$jsonTradedata[ticker][sell]+$jsonTradedata[ticker][buy])/3), 2);
-	
+		//$tradeHillWorth = round((($jsonTradedata[ticker][last]+$jsonTradedata[ticker][sell]+$jsonTradedata[ticker][buy])/3), 2);
+		$tradeHillWorth = $jsonTradedata[ticker][last];
 	//Insert data
 		mysql_query("INSERT INTO `stats_bitcoinConversionHistory` (`tradehill`, `timestamp`) VALUES('$tradeHillWorth', '".time()."')")or die(mysql_error());
 
 	
-	mysql_query("UPDATE `websiteSettings` SET `tradeHillWorth` = '".$tradeHillWorth."'");
+		mysql_query("UPDATE `websiteSettings` SET `tradeHillWorth` = '".$tradeHillWorth."'")or die(mysql_error());
+		
 }catch (Exception $e) {
 	echo "Failed to get TradeHill bitcoioin worth<br/>".$e;
 }
