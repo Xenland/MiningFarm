@@ -113,7 +113,7 @@ $fifteenMinutesAgo -= 60*15;
      mysql_query("INSERT INTO `stats_poolMHashHistory` (`timestamp`, `averageMhash`, `totalMhash`)
 							               VALUES('$recordedTime', '$entirePoolAverageMhash', '$entirePoolMhash')")or die(mysql_error());
 //update total shares this round
-     mysql_query("UPDATE `websiteSettings` SET `shares_this_round` = '".$entireSharesThisRound."'");
+     mysql_query("UPDATE `websiteSettings` SET `shares_this_round` = '".$entireSharesThisRound;."'");
 		
 			
 		

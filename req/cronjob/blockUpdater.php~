@@ -47,6 +47,18 @@ $startTime = gettimeofday(2);
 					}
 			}
 
+
+
+
+//If shares_dead gets over 3 million shares of data(roughly 1GB) delete the round recorded to start saving space
+	$totalDeadShares = mysql_query("SELECT `id` FROM `shares_dead`");
+	$totalDeadShares = mysql_num_rows($totalDeadShares);
+	
+	if($totalDeadShares >= 3000000){
+		//delete shares (in the future this will delete by the last block but for this release it deletes all)
+			$lastRound = mysql_query("DELETE FROM `shares_dead`");
+	}
+
 	
 //Retireve JSON data from trade hill update it to database for quick retireval
 try{
