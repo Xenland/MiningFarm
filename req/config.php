@@ -27,6 +27,6 @@ $rpcHost	= "127.0.0.1:8332";
 
 
 //This will show up on your stats.php page
-$ip = "MiningFarm.com";
+$ip = "127.0.0.1";
 $port = "8332";
 ?>

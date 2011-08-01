@@ -24,4 +24,9 @@ $rpcType	= "http";
 $rpcUsername	= "bitcoins";
 $rpcPassword 	= "lolsalad";
 $rpcHost	= "127.0.0.1:8332";
+
+
+//This will show up on your stats.php page
+$ip = "MiningFarm.com";
+$port = "8332";
 ?>

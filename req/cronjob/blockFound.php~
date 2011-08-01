@@ -31,6 +31,55 @@ $startTime = gettimeofday(2);
 //Get some variables
 	$transactions = $bitcoinController->query("listtransactions");
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+/*
 //Go through all the transactions check if there is 50BTC inside
 	$numAccounts = count($transactions);
 	for($i = 0; $i < $numAccounts; $i++){
@@ -198,7 +247,7 @@ $startTime = gettimeofday(2);
 	"No, it will save space thats about it, and this will provide a 'backup' sort of speak just in case something bad happens the pool operator can execute
 	a few commands to recalculate shares and rewards"
 */
-echo "5";
+/*
 //Get all counted shares
 	$countedShares = mysql_query("SELECT `id`, `time`, `rem_host`, `username`, `our_result`, `upstream_result`, `reason`, `solution` FROM `shares_history` WHERE `shareCounted` = '1'");
 	$numCountedShares = mysql_num_rows($countedShares);
@@ -227,7 +276,7 @@ echo "5";
 		}
 		
 
-
+*/
 $lengthOfScript = gettimeofday(2);
 $lengthOfScript -= $startTime;
 
