@@ -19,12 +19,6 @@ $startTime = gettimeofday(2);
 //Connect to database
 	connectToDb();
 
-//This watches the blocks the bitcoin network is solving and inserts the newly found block number into the `networkBlocks`
-	//Open a bitcoind connection
-		$bitcoinController = new BitcoinClient($rpcType, $rpcUsername, $rpcPassword, $rpcHost);
-
-	//Get some variables
-		$currentBlockNumber = $bitcoinController->getblocknumber();
 		
 //The following has nothing to do with updating the blocks but it DOES execute the auto instant payment for every users that has there threshold set
 	//Get minimum cashout
@@ -59,7 +53,7 @@ try{
 		
 	//calculate average with the provided data (Buy, sell, last sale)
 		//$tradeHillWorth = round((($jsonTradedata[ticker][last]+$jsonTradedata[ticker][sell]+$jsonTradedata[ticker][buy])/3), 2);
-		$tradeHillWorth = $jsonTradedata[ticker][last];
+		$tradeHillWorth = round($jsonTradedata[ticker][last], 2);
 	//Insert data
 		mysql_query("INSERT INTO `stats_bitcoinConversionHistory` (`tradehill`, `timestamp`) VALUES('$tradeHillWorth', '".time()."')")or die(mysql_error());
 

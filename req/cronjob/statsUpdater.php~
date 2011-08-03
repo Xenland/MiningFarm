@@ -16,8 +16,8 @@ include($functions);
 
 //This page will generate stats data and plug it into the database
 connectToDb();
-
-
+$error = 0;
+echo ++$error;
 /////////////////////////////////////////////////////////////////////
 /////////////// Generate Mhash/s ////////////////////////////////////
 $recordedTime	= time();
@@ -33,7 +33,7 @@ $fifteenMinutesAgo -= 60*15;
 //Get all `pool_workers` and add there current MHash/s to the stats
      //First get the list of workers who has been active for the past 15 minutes
       $activeWorkersQ = mysql_query("SELECT `username`, `our_result` FROM `shares` WHERE `time` >= '$fifteenMinutesAgo'")or die(mysql_error());
-      
+
       //Predefine variables
         $usernameArray   = array();
         $shareCount      = array();
@@ -81,8 +81,12 @@ $fifteenMinutesAgo -= 60*15;
           //Hashes per second = Number of shares / timedelta * hashspace
             $numShares = $shareCount[$i];
             $numValidShares = $validShareCount[$i];
-            $hashSpace = 4294967296;
-            $hashesPerSecond =  $numShares / (60*15) * $hashSpace;
+            $hashesPerSecond =  $numShares / (60*15) * 4294967296;
+            
+             //Convert to Mhashes, round then upload to server
+               $hashesPerSecond /= 1024;
+               $hashesPerSecond /= 1024;
+               $hashesPerSecond = floor($hashesPerSecond);
                     
           //Efficency = (Valid Shares / Total Shares ) * 100%
              $efficency = ($numValidShares/$numShares)*100;
@@ -99,22 +103,25 @@ $fifteenMinutesAgo -= 60*15;
                $entirePoolMhash += $hashesPerSecond;
                $entireSharesThisRound += $validShareCount[$i];
           
-        }
-        
+        }   
 //Calc entire pool average mhash
      if($entirePoolMhash > 0 && $entireNumHashRows){
        $entirePoolAverageMhash = $entirePoolMhash/$entireNumHashRows;
      }
-     
+ echo ++$error;    
 //Commit $insertMhashQ query
-  mysql_query('INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `efficiency`, `timestamp`) VALUES'.$insertMhashQ)or die(mysql_error());
-
+	if($insertMhashQ == ''){
+  		mysql_query('INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `efficiency`, `timestamp`) VALUES'.$insertMhashQ)or die(mysql_error());
+	}
+echo ++$error;
 //Add pool average & pool total to table
      mysql_query("INSERT INTO `stats_poolMHashHistory` (`timestamp`, `averageMhash`, `totalMhash`)
 							               VALUES('$recordedTime', '$entirePoolAverageMhash', '$entirePoolMhash')")or die(mysql_error());
+echo ++$error;							          
 //update total shares this round
-     mysql_query("UPDATE `websiteSettings` SET `shares_this_round` = '".$entireSharesThisRound;."'");
-		
+     mysql_query("UPDATE `websiteSettings` SET `shares_this_round` = '".$entireSharesThisRound."'");
+
+echo ++$error;
 			
 		
 		
@@ -122,7 +129,7 @@ $fifteenMinutesAgo -= 60*15;
 //Get top sharers for the entire pool (per username)
 	//Delete everything in the stats_topSharers table before we continue
 		mysql_query("DELETE FROM `stats_topSharers`")or die(mysql_error());
-		
+		echo ++$error;
 	//Get list of users
 		$getUsersList = mysql_query("SELECT `id`, `username` FROM `websiteUsers`")or die(mysql_error());
 		while($user = mysql_fetch_array($getUsersList)){
@@ -141,7 +148,7 @@ $fifteenMinutesAgo -= 60*15;
 
 
 
-
+echo ++$error;
 
 
 
@@ -150,14 +157,14 @@ $fifteenMinutesAgo -= 60*15;
 //Get top hasher for the entire pool (per username)
 		//Delete everything in the stats_topHashers table before we continue
 			mysql_query("DELETE FROM `stats_topHashers`")or die(mysql_error());
-			
+			echo $error++;
 		//First get the last timestamp to use with all hashers
 			$getLastTimestampQ = mysql_query("SELECT `timestamp` FROM `stats_userMHashHistory` ORDER BY `timestamp` DESC LIMIT 0,1");
 			$lastTimestamp = mysql_fetch_object($getLastTimestampQ);
-
+echo $error++;
 			//Get list of users
 				$getUsersList = mysql_query("SELECT `id`, `username` FROM `websiteUsers`")or die(mysql_error());
-				
+				echo $error++;
 				while($user = mysql_fetch_array($getUsersList)){
 					//Check if user has any Mhashes, if YES then add up every worker for this user and add to stats_topHashers
 						$getWorkersQ = mysql_query("SELECT `mhashes` FROM `stats_userMHashHistory` WHERE `username` LIKE '".$user["username"].".%' AND `timestamp` = '".$lastTimestamp->timestamp."'")or die(mysql_error());
@@ -178,11 +185,11 @@ $fifteenMinutesAgo -= 60*15;
 //Purge stats longer then one hour ago
 	$thirtyMinsAgo = time();
 	$thirtyMinsAgo -= 60*30;
-
+echo $error++;
 mysql_query("DELETE FROM `stats_poolMHashHistory` WHERE `timestamp` <= '$thirtyMinsAgo'");
 mysql_query("DELETE FROM `stats_userMHashHistory` WHERE `timestamp` <= '$thirtyMinsAgo'");
 mysql_query("DELETE FROM `stats_topSharers` WHERE `timestamp` <= '$thirtyMinsAgo'");
-
+echo $error++;
 $lengthOfScript = gettimeofday(2);
 $lengthOfScript -= $startTime;
 

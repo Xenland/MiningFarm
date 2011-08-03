@@ -38,7 +38,7 @@
 					$totalWorkersQ = mysql_query("SELECT DISTINCT `username` FROM `stats_userMHashHistory` WHERE `timestamp` >= $fifteenMinutesAgo AND `mhashes` > 0");
 					$totalWorkers = mysql_num_rows($totalWorkersQ);
 			?>		
-			<?php echo $totalWorkers;?> Workers &middot; <?php echo round($bitcoinController->getDifficulty());?> Difficulty &middot; Block# <?php echo $bitcoinController->getblocknumber();?>
+			<?php echo $totalWorkers;?> Workers Online | Difficulty of <i><?php echo round($bitcoinController->getDifficulty());?></i> | Block# <?php echo $bitcoinController->getblocknumber();?>
 		</div>
 	</body>
 </html>

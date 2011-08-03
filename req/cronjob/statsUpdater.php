@@ -81,8 +81,12 @@ $fifteenMinutesAgo -= 60*15;
           //Hashes per second = Number of shares / timedelta * hashspace
             $numShares = $shareCount[$i];
             $numValidShares = $validShareCount[$i];
-            $hashSpace = 4294967296;
-            $hashesPerSecond =  $numShares / (60*15) * $hashSpace;
+            $hashesPerSecond =  $numShares / (60*15) * 4294967296;
+            
+             //Convert to Mhashes, round then upload to server
+               $hashesPerSecond /= 1024;
+               $hashesPerSecond /= 1024;
+               $hashesPerSecond = floor($hashesPerSecond);
                     
           //Efficency = (Valid Shares / Total Shares ) * 100%
              $efficency = ($numValidShares/$numShares)*100;
@@ -102,13 +106,15 @@ $fifteenMinutesAgo -= 60*15;
         }
         
 //Calc entire pool average mhash
-     if($entirePoolMhash > 0 && $entireNumHashRows){
+     if($entirePoolMhash > 0 && $entireNumHashRows > 0){
        $entirePoolAverageMhash = $entirePoolMhash/$entireNumHashRows;
      }
      
 //Commit $insertMhashQ query
-  mysql_query('INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `efficiency`, `timestamp`) VALUES'.$insertMhashQ)or die(mysql_error());
-
+	if($insertMhashQ != ''){
+		mysql_query('INSERT INTO `stats_userMHashHistory` (`username`, `mhashes`, `efficiency`, `timestamp`) VALUES'.$insertMhashQ)or die(mysql_error());
+	}
+	
 //Add pool average & pool total to table
      mysql_query("INSERT INTO `stats_poolMHashHistory` (`timestamp`, `averageMhash`, `totalMhash`)
 							               VALUES('$recordedTime', '$entirePoolAverageMhash', '$entirePoolMhash')")or die(mysql_error());
@@ -120,9 +126,6 @@ $fifteenMinutesAgo -= 60*15;
 		
 				
 //Get top sharers for the entire pool (per username)
-	//Delete everything in the stats_topSharers table before we continue
-		mysql_query("DELETE FROM `stats_topSharers`")or die(mysql_error());
-		
 	//Get list of users
 		$getUsersList = mysql_query("SELECT `id`, `username` FROM `websiteUsers`")or die(mysql_error());
 		while($user = mysql_fetch_array($getUsersList)){
@@ -130,13 +133,17 @@ $fifteenMinutesAgo -= 60*15;
 				$totalSharesQ = mysql_query("SELECT `id` FROM `shares` WHERE `username` LIKE '".$user["username"].".%'")or die(mysql_error());
 				$totalShares = mysql_num_rows($totalSharesQ);
 				
-				$totalCurrentQ = mysql_query("SELECT `id` FROM `shares` WHERE `username` LIKE '".$user["username"].".%'")or die(mysql_error());
-				$totalCurrent = mysql_num_rows($totalCurrentQ);
-				
-				$totalShares += $totalCurrent;
-				
 			//Insert into stats_topSharers
-				mysql_query("INSERT INTO `stats_topSharers` (`userId`, `shares`) VALUES('".$user["id"]."', '".$totalShares."')")or die(mysql_error());
+				//Check if this user is already inside of the stats
+					$alreadyTopSharerQ = mysql_query("SELECT `id` FROM `stats_topSharers` WHERE `userId` = '".$user["id"]."' LIMIT 0,1")or die(mysql_error());
+					$areadyTopSharer = mysql_num_rows($alreadyTopSharerQ);
+					
+					if($areadyTopSharer == 0){
+						mysql_query("INSERT INTO `stats_topSharers` (`userId`, `shares`) VALUES('".$user["id"]."', '".$totalShares."')")or die(mysql_error());
+					}else if($areadyTopSharer == 1){
+						mysql_query("UPDATE `stats_topSharers` SET `shares` = '".$totalShares."' WHERE `userId`= '".$user["id"]."'")or die(mysql_error());
+					}
+
 		}
 
 
@@ -149,7 +156,6 @@ $fifteenMinutesAgo -= 60*15;
 
 //Get top hasher for the entire pool (per username)
 		//Delete everything in the stats_topHashers table before we continue
-			mysql_query("DELETE FROM `stats_topHashers`")or die(mysql_error());
 			
 		//First get the last timestamp to use with all hashers
 			$getLastTimestampQ = mysql_query("SELECT `timestamp` FROM `stats_userMHashHistory` ORDER BY `timestamp` DESC LIMIT 0,1");
@@ -169,7 +175,15 @@ $fifteenMinutesAgo -= 60*15;
 						
 						//If hashing power is greater then zero then insert into the stats_topHashers table
 							if($totalHashingPower > 0){
-								mysql_query("INSERT INTO `stats_topHashers` (`userId`, `totalHashes`) VALUES('".$user["id"]."', '".$totalHashingPower."')")or die(mysql_error());
+								//Check if this user is already in the list, if not INSERT if they are UPDATE
+									$inTopHashersListQ = mysql_query("SELECT `id` FROM `stats_topHashers` WHERE `userId` = '".$user["id"]."'")or die(mysql_error());
+									$inTopHashersList = mysql_num_rows($inTopHashersListQ);
+									
+									if($inTopHashersList == 0){
+										mysql_query("INSERT INTO `stats_topHashers` (`userId`, `totalHashes`) VALUES('".$user["id"]."', '".$totalHashingPower."')")or die(mysql_error());
+									}else if($inTopHashersList == 1){
+										mysql_query("UPDATE `stats_topHashers` SET `totalHashes` = '".$totalHashingPower."' WHERE `userId` = '".$user["id"]."' LIMIT 1")or die(mysql_error());
+									}
 							}
 				}
 				
@@ -181,7 +195,6 @@ $fifteenMinutesAgo -= 60*15;
 
 mysql_query("DELETE FROM `stats_poolMHashHistory` WHERE `timestamp` <= '$thirtyMinsAgo'");
 mysql_query("DELETE FROM `stats_userMHashHistory` WHERE `timestamp` <= '$thirtyMinsAgo'");
-mysql_query("DELETE FROM `stats_topSharers` WHERE `timestamp` <= '$thirtyMinsAgo'");
 
 $lengthOfScript = gettimeofday(2);
 $lengthOfScript -= $startTime;

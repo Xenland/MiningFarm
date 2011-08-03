@@ -173,6 +173,7 @@ include($header);
 																		position:relative;
 																		top:0;
 																		left:4em;
+																		height:1.1em;
 																	}
 																	.guiMinerUser{
 																		position:relative;
@@ -288,7 +289,7 @@ include($header);
 																	<div class="guiMiner">
 																		<div class="guiMinerForm">
 																				<div class="guiServerTitle">
-																					MiningFarm.com
+																					<?php echo $ip.":".$port;?>
 																				</div>
 																				<form action="workers.php" method="post">
 																					<input type="hidden" name="workerId" value="<?=$worker["id"]?>">

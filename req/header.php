@@ -69,7 +69,7 @@ connectToDb();
 												<input type="password" name="password" value="password" id="passForm" onMouseDown="clearPassword();" onKeyDown="pressedEnter(event);" onKeyUp="pressedEnter(event);" onKeyPress="pressedEnter(event);" size="15">
 												<br>
 											</form>
-												<input src="/images/register.gif" value="Register" type="image" class="regsiterBtn"  onMouseUp="void(document.location='/register.php');"> &nbsp; <input src="/images/login.gif" value="Login" type="image"  onMouseUp="void(document.forms['loginForm'].submit())">
+												<a href="/resetpassword.php">Reset Password</a> &middot; <input src="/images/register.gif" value="Register" type="image" class="regsiterBtn"  onMouseUp="void(document.location='/register.php');"> &nbsp; <input src="/images/login.gif" value="Login" type="image"  onMouseUp="void(document.forms['loginForm'].submit())">
 
 										</div>
 									</div>

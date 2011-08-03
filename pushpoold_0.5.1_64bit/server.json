@@ -1,0 +1,62 @@
+{
+	# network ports
+	"listen" : [
+		# binary protocol (default), port 8342
+		{ "port" : 8342 },
+
+		# HTTP JSON-RPC protocol, port 8341
+		{ "port" : 8341, "protocol" : "http-json" },
+
+		# HTTP JSON-RPC protocol, port 8344,
+		# with trusted proxy appserver.example.com forwarding
+		# requests to us
+		{ "port" : 8332, "protocol" : "http-json",
+		  "proxy" : "127.0.0.1" },
+
+		# binary protocol, localhost-only port 8338
+		{ "host" : "127.0.0.1", "port" : 8338, "protocol" : "binary" }
+	],
+
+	# database settings
+	"database" : {
+		"engine" : "mysql",
+		"host" : "localhost",
+		"port" : 3306,
+		"name" : "miningfarm",
+		"username" : "miningfarm",
+		"password" : "spMEstLu3SPTfKSj",
+		"sharelog" : true,
+		"stmt.pwdb":"SELECT `password` FROM `pool_worker` WHERE `username` = ?",
+		"stmt.sharelog":"INSERT INTO shares (rem_host, username, our_result, upstream_result, reason, solution, time) VALUES (?, ?, ?, ?, ?, ?, UNIX_TIMESTAMP())"
+
+	},
+
+	# cache settings
+	#"memcached" : {
+	#	"servers" : [
+	#		{ "host" : "127.0.0.1", "port" : 11211 }
+	#	]
+	#},
+
+	#"pid" : "/tmp/pushpoold.pid",
+
+	# overrides local hostname detection
+	"forcehost" : "localhost.localdomain",
+
+	"log.requests" : "/tmp/request.log",
+	"log.shares" : "/tmp/shares.log",
+
+	# the server assumes longpolling (w/ SIGUSR1 called for each blk)
+	"longpoll.disable" : false,
+
+	# length of time to cache username/password credentials, in seconds
+	"auth.cred_cache.expire" : 75,
+
+	# RPC settings | Notice how this ISN'T port number 8332 this is becuase the same port number should not becuase inconjunction with the JSON RPC port other wise you'll get 500 errors
+	"rpc.url" : "http://127.0.0.1:8362/",
+	"rpc.user" : "Jl87sibgK29BN3",
+	"rpc.pass" : "9dj4dsdjYbn",
+
+	# rewrite returned 'target' to difficulty-1?
+	"rpc.target.rewrite" : true
+}

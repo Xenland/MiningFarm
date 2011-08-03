@@ -93,14 +93,9 @@ include($header);
 																	include($dir."/includes/graphs_poolstats.php");
 																	
 																	
-																//Include stats users graph if nessecary
-																	//Display the all users graph?
-																		if(!empty($getCredientials->statsShowAllUsers)){
-																		
-																			if($getCredientials->statsShowAllUsers == 1){
-																				include($dir."/includes/graphs_bitcoinHistory.php");
-																			}
-																		}
+																//Include stats users graph
+																	include($dir."/includes/graphs_bitcoinHistory.php");
+															
 															?>
 														<br/>
 														

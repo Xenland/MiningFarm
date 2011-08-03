@@ -308,13 +308,12 @@ class getCredientials{
 				connectToDb();
 
 			//Get website settings
-				$websiteSettingsQ = mysql_query("SELECT `noreplyEmail`, `browserTitle`, `cashoutMinimum`, `stats_showallusers`, `enableRequiredEmail` FROM `websiteSettings`");
+				$websiteSettingsQ = mysql_query("SELECT `noreplyEmail`, `browserTitle`, `cashoutMinimum`, `enableRequiredEmail` FROM `websiteSettings`");
 				$websiteSettings = mysql_fetch_object($websiteSettingsQ);
 
 				$this->adminBrowserTitle	= $websiteSettings->browserTitle;
 				$this->adminCashoutMin		= $websiteSettings->cashoutMinimum;
 				$this->adminEmail		= $websiteSettings->noreplyEmail;
-				$this->statsShowAllUsers	= $websiteSettings->stats_showallusers;
 				$this->emailAuthorisationRequired = $websiteSettings->enableRequiredEmail;
 		}
 }
