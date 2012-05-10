@@ -41,29 +41,6 @@ $startTime = gettimeofday(2);
 					}
 			}
 
-	
-//Retireve JSON data from trade hill update it to database for quick retireval
-try{
-	$file = fopen("https://api.tradehill.com/APIv1/USD/Ticker", "rb");
-	$tradedata = fread($file, 8192);
-	fclose($file);
-
-	//get trade hill json data
-		$jsonTradedata = json_decode($tradedata, true);
-		
-	//calculate average with the provided data (Buy, sell, last sale)
-		//$tradeHillWorth = round((($jsonTradedata[ticker][last]+$jsonTradedata[ticker][sell]+$jsonTradedata[ticker][buy])/3), 2);
-		$tradeHillWorth = round($jsonTradedata[ticker][last], 2);
-	//Insert data
-		mysql_query("INSERT INTO `stats_bitcoinConversionHistory` (`tradehill`, `timestamp`) VALUES('$tradeHillWorth', '".time()."')")or die(mysql_error());
-
-	
-		mysql_query("UPDATE `websiteSettings` SET `tradeHillWorth` = '".$tradeHillWorth."'")or die(mysql_error());
-		
-}catch (Exception $e) {
-	echo "Failed to get TradeHill bitcoioin worth<br/>".$e;
-}
-
 
 $lengthOfScript = gettimeofday(2);
 $lengthOfScript -= $startTime;
